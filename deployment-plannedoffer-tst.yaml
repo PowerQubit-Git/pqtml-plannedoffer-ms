@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-plannedoffer-svc
+  namespace: default
+  labels:
+    app: ms-plannedoffer
+    service: ms-plannedoffer-svc
+spec:
+  selector:
+    app: ms-plannedoffer
+  ports:
+    - port: 8080
+      nodePort: 30083
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-plannedoffer-v1
+  namespace: default
+  labels:
+    app: ms-plannedoffer
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-plannedoffer
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ms-plannedoffer
+        version: v1
+    spec:
+      containers:
+        - name: ms-plannedoffer
+          image: fra.ocir.io/frdvdrigd38a/ms-plannedoffer:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
+          env:
+            - name: server.servlet.contextPath
+              value: "/planned-offer"
+            - name: spring.datasource.url
+              value: "jdbc:postgresql://10.3.4.2:5432/sae?currentSchema=ms_planned_offer&reWriteBatchedInserts=true"
+            - name: spring.datasource.username
+              value: "postgres"
+            - name: spring.datasource.password
+              value: "Pocosi12"
+            - name: spring.jpa.properties.hibernate.jdbc.batch_size
+              value: "20"
+            - name: spring.jpa.properties.hibernate.order_inserts
+              value: "true"
+            - name: spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation
+              value: "true"
+            - name: spring.jpa.properties.hibernate.dialect
+              value: "org.hibernate.dialect.PostgreSQL92Dialect"
+            - name: spring.jpa.open-in-view
+              value: "false"
+            - name: spring.jpa.defer-datasource-initialization
+              value: "false"
+            - name: spring.jpa.hibernate.ddl-auto
+              value: "none"
+            - name: spring.flyway.baseline-on-migrate
+              value: "true"
+            - name: spring.flyway.enabled
+              value: "true"
+            - name: solace.jms.host
+              value: "solace-pubsubplus-ha-discovery.event-broker.svc.cluster.local"
+            - name: solace.jms.msgVpn
+              value: "default"
+            - name: spring.data.mongodb.database
+              value: "ActionListManagement"
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      imagePullSecrets:
+        - name: ocirsecret
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: ms-plannedoffer
+  namespace: default
+spec:
+  host: ms-plannedoffer-svc
+  subsets:
+    - name: v1
+      labels:
+        version: v1
