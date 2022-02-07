@@ -20,7 +20,7 @@ import javax.persistence.*;
 
 @Data
 @IdClass(CsvRowFeedIdCompositeKey.class)
-public class StopTime
+public class StopTime implements FeedIdEntity
 {
 
     @Column(name = "TripId")

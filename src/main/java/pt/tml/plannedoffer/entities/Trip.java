@@ -20,7 +20,7 @@ import java.time.LocalTime;
         "ShapeId", "WheelchairAccessible", "BikesAllowed"})
 
 @IdClass(CsvRowFeedIdCompositeKey.class)
-public class Trip
+public class Trip implements FeedIdEntity
 {
 
     @Column(name = "RouteId")

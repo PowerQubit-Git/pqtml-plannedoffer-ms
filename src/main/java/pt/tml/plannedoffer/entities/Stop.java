@@ -20,7 +20,7 @@ import javax.persistence.*;
 })
 
 @IdClass(CsvRowFeedIdCompositeKey.class)
-public class Stop
+public class Stop implements FeedIdEntity
 {
     @Column(name = "StopId")
     private String stopId;

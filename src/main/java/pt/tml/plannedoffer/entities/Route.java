@@ -18,7 +18,7 @@ import javax.persistence.*;
         "School", "ContinuousPickup", "ContinuousDropOff"})
 
 @IdClass(CsvRowFeedIdCompositeKey.class)
-public class Route
+public class Route implements FeedIdEntity
 {
 
     @Column(name = "LineId")

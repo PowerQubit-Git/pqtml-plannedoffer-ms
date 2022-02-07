@@ -19,7 +19,7 @@ import java.time.LocalTime;
 @CsvFileName("frequencies.txt")
 @CsvBindByNameOrder({"TripId", "StartTime", "EndTime", "Frequency", "Typology", "Propulsion", "PassengerCounting", "VideoSurveillance"})
 @IdClass(CsvRowFeedIdCompositeKey.class)
-public class Frequency
+public class Frequency implements FeedIdEntity
 {
 
     @Column(name = "TripId")

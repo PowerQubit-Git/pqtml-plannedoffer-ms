@@ -58,6 +58,24 @@ public class PostgresService
 
 
     /**
+     *
+     *  Copy GtfsEntities from the Gtfs Container to Jpa Database Entities
+     *
+     */
+    public <T> ArrayList copyEntities(List<GtfsEntity> gtfsEntities, T type, String feedId){
+        ArrayList res = new ArrayList<T>();
+        gtfsEntities.forEach(e -> {
+            Gson gson = new Gson();
+            var newObj = gson.fromJson(gson.toJson(e), (Type) type);
+            ((pt.tml.plannedoffer.entities.FeedIdEntity) newObj).setFeedId(feedId);
+            res.add((T)newObj);
+        });
+        return res;
+    }
+
+
+
+    /**
      * Generate frequencies for a plan
      * (Inserts records in "frequencies" table)
      */
@@ -99,119 +117,25 @@ public class PostgresService
         {
             log.atSevere().withCause(e).log();
         }
-
-
-
-
-
-
-
-
-
-
     }
 
-
-
-
-
-    /**
-     *
-     * @param gtfsEntities
-     * @param type
-     * @param <T>
-     * @return
-     */
-    public <T> ArrayList<T> copyEntities(List<GtfsEntity> gtfsEntities, T type, String feedId){
-        ArrayList<T> res = new ArrayList<T>();
-        gtfsEntities.forEach(e -> {
-            Gson gson = new Gson();
-            var newObj = gson.fromJson(gson.toJson(e), (Type) type);
-            ((pt.tml.plannedoffer.entities.FeedIdEntity) newObj).setFeedId(feedId);
-            res.add((T)newObj);
-        });
-        return res;
-    }
-
-
-
-
-    @LogExecutionTime
-    public void addAgencyToDatabaseOld(GtfsFeedContainer feedContainer, String feedId) throws Exception
-    {
-        GtfsTableContainer agencyContainer = feedContainer.getTableForFilename("agency.txt")
-                .orElseThrow(() -> new Exception("agency.txt not found"));
-
-        List<GtfsAgency> entities = agencyContainer.getEntities();
-        List<Agency> ioAgency = new ArrayList<>();
-        log.atInfo().log(String.format("Persisting Agency : %d entries", entities.size()));
-        entities.forEach(agency -> {
-            Agency newAgency = new Agency();
-            newAgency.setFeedId(feedId);
-            newAgency.setAgencyId(agency.agencyId());
-            newAgency.setAgencyName(agency.agencyName());
-            newAgency.setAgencyUrl(agency.agencyUrl());
-//          newAgency.setAgencyTimezone(agency.agencyTimezone());
-            newAgency.setAgencyLang(agency.agencyLang());
-            newAgency.setCsvRowNumber(agency.csvRowNumber());
-        });
-        try
-        {
-            agencyRepository.saveAllAndFlush(ioAgency);
-        }
-        catch (Exception e)
-        {
-            log.atSevere().withCause(e).log();
-        }
-    }
 
 
     @LogExecutionTime
     public void addStopsToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
     {
-        GtfsTableContainer stopsContainer = feedContainer.getTableForFilename("stops.txt").orElseThrow(() -> new Exception("stops.txt not found"));
-        List<GtfsStop> entities = stopsContainer.getEntities();
-        List<Stop> ioStops = new ArrayList<>();
+        GtfsTableContainer stopsContainer = feedContainer.getTableForFilename("stops.txt")
+                .orElseThrow(() -> new Exception("stops.txt not found"));
+
+        List<GtfsEntity> entities = stopsContainer.getEntities();
+
         log.atInfo().log(String.format("Persisting Stops : %d entries", entities.size()));
-        entities.forEach(stop -> {
-            Stop newStop = new Stop();
-            newStop.setFeedId(feedId);
-            newStop.setCsvRowNumber(stop.csvRowNumber());
-            newStop.setStopId(stop.stopId());
-            newStop.setStopIdStepp(stop.stopIdStepp());
-            newStop.setStopCode(stop.stopCode());
-            newStop.setStopName(stop.stopName());
-            newStop.setStopDesc(stop.stopDesc());
-            newStop.setStopRemarks(stop.stopRemarks());
-            newStop.setStopLat(stop.stopLat());
-            newStop.setStopLon(stop.stopLon());
-            newStop.setZoneShift(stop.zone_shift());
-            newStop.setLocationType(stop.locationType());
-            newStop.setParentStation(stop.parentStation());
-            newStop.setWheelchairBoarding(stop.wheelchairBoarding());
-            newStop.setPlatformCode(stop.platformCode());
-            newStop.setEntranceRestriction(stop.entranceRestriction());
-            newStop.setExitRestriction(stop.exitRestriction());
-            newStop.setSlot(stop.slot());
-            newStop.setSignalling(stop.signalling());
-            newStop.setShelter(stop.shelter());
-            newStop.setBench(stop.bench());
-            newStop.setNetworkMap(stop.networkMap());
-            newStop.setSchedule(stop.schedule());
-            newStop.setRealTimeInformation(stop.realTimeInformation());
-            newStop.setTariff(stop.tariff());
-            newStop.setPreservationState(stop.preservationState());
-            newStop.setEquipment(stop.equipment());
-            newStop.setObservations(stop.observations());
-            //newStop.setRegion(stop.region());
-            newStop.setMunicipality(stop.municipality());
-            newStop.setMunicipalityFare1(stop.municipalityFare1());
-            newStop.setMunicipalityFare2(stop.municipalityFare2());
-            ioStops.add(newStop);
-        });
+
+        ArrayList<Stop> list = copyEntities(entities, Stop.class, feedId);
+
         try
         {
-            stopRepository.saveAllAndFlush(ioStops);
+            stopRepository.saveAllAndFlush(list);
         }
         catch (Exception e)
         {

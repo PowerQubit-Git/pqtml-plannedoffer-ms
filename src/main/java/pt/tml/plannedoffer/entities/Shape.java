@@ -15,7 +15,7 @@ import javax.persistence.*;
 @IdClass(CsvRowFeedIdCompositeKey.class)
 @CsvFileName("shapes.txt")
 @CsvBindByNameOrder({"LineId", "shapePtLat", "shapePtLon", "shapePtSequence", "shapeDistTraveled"})
-public class Shape
+public class Shape implements FeedIdEntity
 {
 
     @Column(name = "LineId")

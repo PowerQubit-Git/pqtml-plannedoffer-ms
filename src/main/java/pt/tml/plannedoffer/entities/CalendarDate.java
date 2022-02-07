@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @CsvBindByNameOrder({"ServiceId", "Calendar_Name", "Holiday", "Period", "Date", "ExceptionType"})
 
 @IdClass(CsvRowFeedIdCompositeKey.class)
-public class CalendarDate
+public class CalendarDate implements FeedIdEntity
 {
 
     @Column(name = "ServiceId")
