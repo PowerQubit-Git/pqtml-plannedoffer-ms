@@ -28,7 +28,7 @@ public class PostGresFunctionsController
     {
         try
         {
-            StoredProcedureQuery query = entityManager.createStoredProcedureQuery("ms_intended_offer.sp_number_of_trips_by_line", SpTripsByLine.class);
+            StoredProcedureQuery query = entityManager.createStoredProcedureQuery("ms_planned_offer.sp_number_of_trips_by_line", SpTripsByLine.class);
             query.registerStoredProcedureParameter(1, String.class, ParameterMode.IN);
             query.setParameter(1, feedId);
             query.execute();
@@ -46,7 +46,7 @@ public class PostGresFunctionsController
     {
         try
         {
-            StoredProcedureQuery query = entityManager.createStoredProcedureQuery("ms_intended_offer.sp_get_rows_by_table", SpRowsByTable.class);
+            StoredProcedureQuery query = entityManager.createStoredProcedureQuery("ms_planned_offer.sp_get_rows_by_table", SpRowsByTable.class);
             query.registerStoredProcedureParameter(1, String.class, ParameterMode.IN);
             query.setParameter(1, feedId);
             query.execute();

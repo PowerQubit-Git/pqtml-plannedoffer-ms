@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import java.time.LocalTime;
 
 @Data
-@Table(name = "frequency_periods", schema = "ms_intended_offer")
+@Table(name = "frequency_periods", schema = "ms_planned_offer")
 @Entity
 public class FrequencyPeriod
 {

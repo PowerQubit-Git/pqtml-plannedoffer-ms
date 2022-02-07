@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pt.tml.plannedoffer.database.MongoDbService;
 import pt.tml.plannedoffer.global.ApplicationState;
-import pt.tml.plannedoffer.models.IntendedOfferInfo;
-import pt.tml.plannedoffer.models.IntendedOfferUpload;
+import pt.tml.plannedoffer.models.PlannedOfferInfo;
+import pt.tml.plannedoffer.models.PlannedOfferUpload;
 import pt.tml.plannedoffer.models.Notices;
 import pt.tml.plannedoffer.models.ReportSummary;
 import pt.tml.plannedoffer.services.GtfsValidationService;
@@ -33,9 +33,9 @@ public class UploadController
 
     @SuppressWarnings("unchecked")
     @PostMapping("upload")
-    public ResponseEntity<IntendedOfferInfo> uploadFile(@RequestParam("file") MultipartFile file,
-                                                        @RequestParam("user") String publisher,
-                                                        HttpServletRequest request)
+    public ResponseEntity<PlannedOfferInfo> uploadFile(@RequestParam("file") MultipartFile file,
+                                                       @RequestParam("user") String publisher,
+                                                       HttpServletRequest request)
     {
 
 //        var remoteIpAddress= request.getHeader("X-FORWARDED-FOR");
@@ -48,12 +48,12 @@ public class UploadController
                     ApplicationState.validationBusy,
                     ApplicationState.entityPersistenceBusy));
 
-            return (ResponseEntity<IntendedOfferInfo>) ResponseEntity.status(HttpStatus.CONFLICT);
+            return (ResponseEntity<PlannedOfferInfo>) ResponseEntity.status(HttpStatus.CONFLICT);
         }
 
         ApplicationState.uploadBusy = true;
 
-        IntendedOfferUpload upload = new IntendedOfferUpload();
+        PlannedOfferUpload upload = new PlannedOfferUpload();
 
         try
         {
@@ -83,12 +83,12 @@ public class UploadController
 
         // TODO: detail returned error type
         ApplicationState.uploadBusy = false;
-        return (ResponseEntity<IntendedOfferInfo>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        return (ResponseEntity<PlannedOfferInfo>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
     @GetMapping("uploads")
-    List<IntendedOfferUpload> getUploads()
+    List<PlannedOfferUpload> getUploads()
     {
         return mongoService.getMetaPlan();
     }
@@ -97,7 +97,7 @@ public class UploadController
     @GetMapping("download/{feedId}")
     HttpEntity<byte[]> getOfferBlob(@PathVariable String feedId) throws Exception
     {
-        IntendedOfferUpload m = mongoService.getPlan(feedId);
+        PlannedOfferUpload m = mongoService.getPlan(feedId);
         Binary file = m.getFile();
         byte[] documentBody = file.getData();
         HttpHeaders header = new HttpHeaders();
@@ -111,7 +111,7 @@ public class UploadController
     @GetMapping("validation-report/{feedId}")
     Notices getValidationsReport(@PathVariable String feedId) throws Exception
     {
-        IntendedOfferUpload m = mongoService.getPlan(feedId);
+        PlannedOfferUpload m = mongoService.getPlan(feedId);
         return m.getValidationReport();
     }
 
@@ -119,7 +119,7 @@ public class UploadController
     @GetMapping("validation-errors/{feedId}")
     Notices getErrorsReport(@PathVariable String feedId) throws Exception
     {
-        IntendedOfferUpload m = mongoService.getPlan(feedId);
+        PlannedOfferUpload m = mongoService.getPlan(feedId);
         return m.getErrorsReport();
     }
 
@@ -127,7 +127,7 @@ public class UploadController
     @GetMapping("explorer/{feedId}")
     List<ReportSummary> getFilesResume(@PathVariable String feedId) throws Exception
     {
-        IntendedOfferUpload m = mongoService.getPlan(feedId);
+        PlannedOfferUpload m = mongoService.getPlan(feedId);
         return m.getTableResumeList();
     }
 

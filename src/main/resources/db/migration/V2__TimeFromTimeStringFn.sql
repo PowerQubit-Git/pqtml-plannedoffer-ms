@@ -25,5 +25,5 @@ return res;
 end;
 $$;
 
-alter function ms_intended_offer.time_from_timestring(varchar) owner to postgres;
+alter function ms_planned_offer.time_from_timestring(varchar) owner to postgres;
 

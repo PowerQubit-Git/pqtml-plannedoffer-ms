@@ -49,7 +49,7 @@ public class CsvPgCopyWriter
         log.atInfo().log(String.format("Exporting %s", tableName));
 
         var listOfFields = fieldList.stream().map(f -> f = camelToSnake(f)).collect(Collectors.joining(","));
-        var queryString = String.format("(SELECT %s FROM ms_intended_offer.%s WHERE feed_id='%s')", listOfFields, tableName, feedId);
+        var queryString = String.format("(SELECT %s FROM ms_planned_offer.%s WHERE feed_id='%s')", listOfFields, tableName, feedId);
         var pgCmd = String.format("%s -h %s -p %s -d %s -U %s -c \"", postgresExecutable, postgresHost, postgresPort, postgresDatabase, postgresUsername);
         var pgParams = String.format("\\copy %s TO '%s' CSV DELIMITER ',' HEADER ENCODING '%s'\"", queryString, csvFilePath, encoding);
 

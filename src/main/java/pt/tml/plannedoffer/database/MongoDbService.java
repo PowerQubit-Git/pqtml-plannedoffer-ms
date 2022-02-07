@@ -4,8 +4,8 @@ import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pt.tml.plannedoffer.aspects.LogExecutionTime;
-import pt.tml.plannedoffer.models.IntendedOfferUpload;
-import pt.tml.plannedoffer.repository.IntendedOfferUploadRepository;
+import pt.tml.plannedoffer.models.PlannedOfferUpload;
+import pt.tml.plannedoffer.repository.PlannedOfferUploadRepository;
 
 import java.util.List;
 
@@ -15,43 +15,43 @@ public class MongoDbService
 {
 
     @Autowired
-    IntendedOfferUploadRepository mongoRepository;
+    PlannedOfferUploadRepository mongoRepository;
 
 
     /**
-     * Read Intended offer from Mongo DB
+     * Read Planned offer from Mongo DB
      */
-    @LogExecutionTime(started = "Reading Intended Offer from MongoDb")
-    public IntendedOfferUpload getPlan(String offerId)
+    @LogExecutionTime(started = "Reading Planned Offer from MongoDb")
+    public PlannedOfferUpload getPlan(String offerId)
     {
 
-        IntendedOfferUpload res = null;
+        PlannedOfferUpload res = null;
         try
         {
             res = mongoRepository.findById(offerId).orElseThrow(() -> new Exception("not found"));
         }
         catch (Exception e)
         {
-            log.atSevere().withCause(e).log("Unable to read intended offer from Mongo");
+            log.atSevere().withCause(e).log("Unable to read planned offer from Mongo");
         }
         return res;
     }
 
 
     /**
-     * Save Intended Offer blob to Mongo DB
+     * Save Planned Offer blob to Mongo DB
      */
-    @LogExecutionTime(started = "Saving Intended Offer to MongoDb")
-    public IntendedOfferUpload savePlan(IntendedOfferUpload intendedOfferUpload)
+    @LogExecutionTime(started = "Saving Planned Offer to MongoDb")
+    public PlannedOfferUpload savePlan(PlannedOfferUpload plannedOfferUpload)
     {
-        return mongoRepository.save(intendedOfferUpload);
+        return mongoRepository.save(plannedOfferUpload);
     }
 
 
     /**
      * Read Offer from Mongo
      */
-    public IntendedOfferUpload savePlan(String offerId) throws Exception
+    public PlannedOfferUpload savePlan(String offerId) throws Exception
     {
         return mongoRepository.findById(offerId).orElseThrow(() -> new Exception(String.format("Requested plan id %s not found.", offerId)));
     }
@@ -66,7 +66,7 @@ public class MongoDbService
      *
      * @return List of Offer
      */
-    public List<IntendedOfferUpload> getMetaPlan()
+    public List<PlannedOfferUpload> getMetaPlan()
     {
         return mongoRepository.getShortFormList();
     }

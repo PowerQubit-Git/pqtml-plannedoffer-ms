@@ -10,8 +10,8 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Document(collection = "IntendedOfferUploads")
-public class IntendedOfferUpload extends IntendedOfferInfo
+@Document(collection = "PlannedOfferUploads")
+public class PlannedOfferUpload extends PlannedOfferInfo
 {
 
     private Notices validationReport;
@@ -19,9 +19,9 @@ public class IntendedOfferUpload extends IntendedOfferInfo
     private List<ReportSummary> tableResumeList;
     private Binary file;
 
-    public IntendedOfferInfo getInfo()
+    public PlannedOfferInfo getInfo()
     {
-        var res = new IntendedOfferInfo();
+        var res = new PlannedOfferInfo();
         res.setId(getId());
         res.setPublisherName(getPublisherName());
         res.setOriginIp(getOriginIp());

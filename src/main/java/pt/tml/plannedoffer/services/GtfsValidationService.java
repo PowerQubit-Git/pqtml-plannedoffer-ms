@@ -24,7 +24,7 @@ import pt.powerqubit.validator.core.validator.ValidatorLoaderException;
 import pt.tml.plannedoffer.aspects.LogExecutionTime;
 import pt.tml.plannedoffer.database.MongoDbService;
 import pt.tml.plannedoffer.database.PostgresService;
-import pt.tml.plannedoffer.models.IntendedOfferUpload;
+import pt.tml.plannedoffer.models.PlannedOfferUpload;
 import pt.tml.plannedoffer.models.Notices;
 import pt.tml.plannedoffer.models.ReportSummary;
 
@@ -85,7 +85,7 @@ public class GtfsValidationService
     }
 
     @LogExecutionTime(started = "Validating GTFS files  ---------------------------------------")
-    public GtfsFeedContainer validatePlan(IntendedOfferUpload plan) throws ValidatorLoaderException, ClassNotFoundException
+    public GtfsFeedContainer validatePlan(PlannedOfferUpload plan) throws ValidatorLoaderException, ClassNotFoundException
     {
 
         //
@@ -171,7 +171,7 @@ public class GtfsValidationService
     /**
      * Generates and exports reports for both validation notices and system errors reports.
      */
-    public void exportReport(IntendedOfferUpload upload, final NoticeContainer noticeContainer, GtfsFeedContainer feedContainer)
+    public void exportReport(PlannedOfferUpload upload, final NoticeContainer noticeContainer, GtfsFeedContainer feedContainer)
     {
         Gson gson = new Gson();
         validationsReport = gson.fromJson(noticeContainer.exportValidationNotices(), Notices.class);

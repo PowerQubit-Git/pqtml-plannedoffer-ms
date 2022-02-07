@@ -8,9 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,12 +24,13 @@ public class SwaggerDocGenerationTest
     @Test
     public void swaggerJsonExists() throws Exception
     {
+        var targetApiFile = "planned-offer-v3-api-docs.json";
         String contentAsString = mockMvc
-                .perform(MockMvcRequestBuilders.get("v3/api-docs"))
+                .perform(MockMvcRequestBuilders.get("/v3/api-docs"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
-        try (Writer writer = new FileWriter(new File("target/generated-sources/plannedoffer-swagger.json")))
+        try (var writer = new OutputStreamWriter(new FileOutputStream(targetApiFile), StandardCharsets.UTF_8))
         {
             IOUtils.write(contentAsString, writer);
         }

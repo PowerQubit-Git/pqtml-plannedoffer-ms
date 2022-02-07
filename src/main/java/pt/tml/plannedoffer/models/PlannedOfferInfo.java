@@ -8,8 +8,8 @@ import javax.persistence.Transient;
 import java.util.Date;
 
 @Data
-@Document(collection = "IntendedOfferUploads")
-public class IntendedOfferInfo
+@Document(collection = "PlannedOfferUploads")
+public class PlannedOfferInfo
 {
 
     @Transient

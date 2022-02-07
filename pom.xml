@@ -140,7 +140,7 @@
                 <!--                    <url>jdbc:postgresql://localhost:5432/sae</url>-->
                 <!--                    <user>postgres</user>-->
                 <!--                    <password>Pocosi12</password>-->
-                <!--                    <schemas>ms_intended_offer</schemas>-->
+                <!--                    <schemas>ms_planned_offer</schemas>-->
                 <!--                </configuration>-->
 
             </plugin>
@@ -152,7 +152,6 @@
                     <target>11</target>
                 </configuration>
             </plugin>
-
 
         </plugins>
     </build>

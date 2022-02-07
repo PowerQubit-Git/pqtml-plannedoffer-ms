@@ -15,7 +15,7 @@ import pt.tml.plannedoffer.aspects.LogExecutionTime;
 import pt.tml.plannedoffer.database.MongoDbService;
 import pt.tml.plannedoffer.database.PostgresServiceProxy;
 import pt.tml.plannedoffer.global.ApplicationState;
-import pt.tml.plannedoffer.models.IntendedOfferUpload;
+import pt.tml.plannedoffer.models.PlannedOfferUpload;
 import pt.tml.plannedoffer.models.ResponseMessage;
 import pt.tml.plannedoffer.services.GtfsValidationService;
 
@@ -38,7 +38,7 @@ public class ValidationController
     @PostMapping("validate")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("offerPlanId") String offerPlanId, @RequestParam("user") String publisher, HttpServletRequest request) throws Exception
     {
-        IntendedOfferUpload offerPlan;
+        PlannedOfferUpload offerPlan;
         Binary zipFile;
 
 //        var remoteIpAddress= request.getHeader("X-FORWARDED-FOR");
