@@ -147,37 +147,18 @@ public class PostgresService
     @LogExecutionTime
     public void addRoutesToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
     {
-        GtfsTableContainer routesContainer = feedContainer.getTableForFilename("routes.txt").orElseThrow(() -> new Exception("routes.txt not found"));
-        List<GtfsRoute> entities = routesContainer.getEntities();
-        List<Route> ioRoutes = new ArrayList<>();
+        GtfsTableContainer routeContainer = feedContainer.getTableForFilename("routes.txt")
+                .orElseThrow(() -> new Exception("routes.txt not found"));
+
+        List<GtfsEntity> entities = routeContainer.getEntities();
+
         log.atInfo().log(String.format("Persisting Routes : %d entries", entities.size()));
-        entities.forEach(route -> {
-            Route newRoute = new Route();
-            newRoute.setFeedId(feedId);
-            newRoute.setCsvRowNumber(route.csvRowNumber());
-            newRoute.setLineId(route.lineId());
-            newRoute.setLineShortName(route.LineShortName());
-            newRoute.setRouteLongName(route.routeLongName());
-            newRoute.setRouteId(route.routeId());
-            newRoute.setAgencyId(route.agencyId());
-            newRoute.setRouteOrigin(route.routeOrigin());
-            newRoute.setRouteDestination(route.routeDestination());
-            newRoute.setRouteShortName(route.routeShortName());
-            newRoute.setRouteLongName(route.routeLongName());
-            newRoute.setRouteDesc(route.routeDesc());
-            newRoute.setRouteRemarks(route.routeRemarks());
-            newRoute.setRouteType(route.routeType());
-            newRoute.setContract(route.contract());
-            newRoute.setPathType(route.pathType());
-            newRoute.setCircular(route.circular());
-            newRoute.setSchool(route.school());
-            newRoute.setContinuousPickup(route.continuousPickup());
-            newRoute.setContinuousDropOff(route.continuousDropOff());
-            ioRoutes.add(newRoute);
-        });
+
+        ArrayList<Route> list = copyEntities(entities, Route.class, feedId);
+
         try
         {
-            routeRepository.saveAllAndFlush(ioRoutes);
+            routeRepository.saveAllAndFlush(list);
         }
         catch (Exception e)
         {
@@ -190,28 +171,16 @@ public class PostgresService
     public void addTripsToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
     {
         GtfsTableContainer tripsContainer = feedContainer.getTableForFilename("trips.txt").orElseThrow(() -> new Exception("trips.txt not found"));
-        List<GtfsTrip> entities = tripsContainer.getEntities();
-        List<Trip> ioTrips = new ArrayList<>();
+
+        List<GtfsEntity> entities = tripsContainer.getEntities();
+
         log.atInfo().log(String.format("Persisting Trips : %d entries", entities.size()));
-        entities.forEach(trips -> {
-            Trip newTrips = new Trip();
-            newTrips.setFeedId(feedId);
-            newTrips.setCsvRowNumber(trips.csvRowNumber());
-            newTrips.setRouteId(trips.routeId());
-            newTrips.setServiceId(trips.serviceId());
-            newTrips.setTripId(trips.tripId());
-            // newTrips.setTripFirt(trips.tripFirst());
-            // newTrips.setTripLast(trips.tripLast());
-            newTrips.setTripHeadsign(trips.tripHeadsign());
-            newTrips.setDirectionId(trips.directionId());
-            newTrips.setShapeId(trips.shapeId());
-            newTrips.setWheelchairAccessible(trips.wheelchairAccessible());
-            newTrips.setBikesAllowed(trips.bikesAllowed());
-            ioTrips.add(newTrips);
-        });
+
+        ArrayList<Trip> list = copyEntities(entities, Trip.class, feedId);
+
         try
         {
-            tripRepository.saveAllAndFlush(ioTrips);
+            tripRepository.saveAllAndFlush(list);
         }
         catch (Exception e)
         {
@@ -224,28 +193,15 @@ public class PostgresService
     public void addStopTimesToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
     {
         GtfsTableContainer stopTimeContainer = feedContainer.getTableForFilename("stop_times.txt").orElseThrow(() -> new Exception("stop_times.txt not found"));
-        List<GtfsStopTime> entities = stopTimeContainer.getEntities();
-        List<StopTime> ioStopTime = new ArrayList<>();
+        List<GtfsEntity> entities = stopTimeContainer.getEntities();
+
         log.atInfo().log(String.format("Persisting StopTimes : %d entries", entities.size()));
-        entities.forEach(stopTime -> {
-            StopTime newStopTime = new StopTime();
-            newStopTime.setFeedId(feedId);
-            newStopTime.setCsvRowNumber(stopTime.csvRowNumber());
-            newStopTime.setTripId(stopTime.tripId());
-            newStopTime.setArrivalTime(stopTime.arrivalTime().toHHMMSS());
-            newStopTime.setDepartureTime(stopTime.departureTime().toHHMMSS());
-            newStopTime.setStopId(stopTime.stopId());
-            newStopTime.setStopSequence(stopTime.stopSequence());
-            newStopTime.setStopHeadsign(stopTime.stopHeadsign());
-            newStopTime.setContinuousPickup(stopTime.continuousPickup());
-            newStopTime.setContinuousDropOff(stopTime.continuousDropOff());
-            newStopTime.setShapeDistTraveled(stopTime.shapeDistTraveled());
-            newStopTime.setTimepoint(stopTime.timepoint());
-            ioStopTime.add(newStopTime);
-        });
+
+        ArrayList<StopTime> list = copyEntities(entities, StopTime.class, feedId);
+
         try
         {
-            stopTimeRepository.saveAllAndFlush(ioStopTime);
+            stopTimeRepository.saveAllAndFlush(list);
         }
         catch (Exception e)
         {
@@ -258,30 +214,15 @@ public class PostgresService
     public void addCalendarToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
     {
         GtfsTableContainer calendarContainer = feedContainer.getTableForFilename("calendar.txt").orElseThrow(() -> new Exception("calendar.txt not found"));
-        List<GtfsCalendar> entities = calendarContainer.getEntities();
-        List<Calendar> ioCalendar = new ArrayList<>();
+        List<GtfsEntity> entities = calendarContainer.getEntities();
+
         log.atInfo().log(String.format("Persisting Calendar : %d entries", entities.size()));
-        entities.forEach(calendar -> {
-            Calendar newCalendar = new Calendar();
-            newCalendar.setFeedId(feedId);
-            newCalendar.setCsvRowNumber(calendar.csvRowNumber());
-            newCalendar.setServiceId(calendar.serviceId());
-            newCalendar.setCalendarName(calendar.calendarName());
-            newCalendar.setPeriod(calendar.period());
-            newCalendar.setMonday(calendar.monday());
-            newCalendar.setTuesday(calendar.tuesday());
-            newCalendar.setWednesday(calendar.wednesday());
-            newCalendar.setThursday(calendar.thursday());
-            newCalendar.setFriday(calendar.friday());
-            newCalendar.setSaturday(calendar.saturday());
-            newCalendar.setSunday(calendar.sunday());
-//          newCalendar.setStartDate(calendar.startDate());
-//          newCalendar.setEndDate(calendar.endDate());
-            ioCalendar.add(newCalendar);
-        });
+
+        ArrayList<Calendar> list = copyEntities(entities, Calendar.class, feedId);
+
         try
         {
-            calendarRepository.saveAllAndFlush(ioCalendar);
+            calendarRepository.saveAllAndFlush(list);
         }
         catch (Exception e)
         {
@@ -294,24 +235,15 @@ public class PostgresService
     public void addCalendarDatesToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
     {
         GtfsTableContainer calendarDatesContainer = feedContainer.getTableForFilename("calendar_dates.txt").orElseThrow(() -> new Exception("calendar_date.txt not found"));
-        List<GtfsCalendarDate> entities = calendarDatesContainer.getEntities();
-        List<CalendarDate> ioCalendarDate = new ArrayList<>();
+        List<GtfsEntity> entities = calendarDatesContainer.getEntities();
+
         log.atInfo().log(String.format("Persisting CalendarDates : %d entries", entities.size()));
-        entities.forEach(calendarDate -> {
-            CalendarDate newCalendarDate = new CalendarDate();
-            newCalendarDate.setFeedId(feedId);
-            newCalendarDate.setCsvRowNumber(calendarDate.csvRowNumber());
-            newCalendarDate.setServiceId(calendarDate.serviceId());
-            newCalendarDate.setCalendarName(calendarDate.calendarName());
-            newCalendarDate.setHoliday(calendarDate.holiday());
-            newCalendarDate.setPeriod(calendarDate.period());
-            //newCalendarDate.setDate(calendarDate.date());
-            newCalendarDate.setExceptionType(calendarDate.exceptionType());
-            ioCalendarDate.add(newCalendarDate);
-        });
+
+        ArrayList<CalendarDate> list = copyEntities(entities, CalendarDate.class, feedId);
+
         try
         {
-            calendarDateRepository.saveAllAndFlush(ioCalendarDate);
+            calendarDateRepository.saveAllAndFlush(list);
         }
         catch (Exception e)
         {
@@ -324,23 +256,15 @@ public class PostgresService
     public void addShapesToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
     {
         GtfsTableContainer shapeContainer = feedContainer.getTableForFilename("shapes.txt").orElseThrow(() -> new Exception("shape.txt not found"));
-        List<GtfsShape> entities = shapeContainer.getEntities();
-        List<Shape> ioShape = new ArrayList<>();
+        List<GtfsEntity> entities = shapeContainer.getEntities();
+
         log.atInfo().log(String.format("Persisting Shapes : %d entries", entities.size()));
-        entities.forEach(shape -> {
-            Shape newShape = new Shape();
-            newShape.setFeedId(feedId);
-            newShape.setCsvRowNumber(shape.csvRowNumber());
-            newShape.setShapeId(shape.shapeId());
-            newShape.setShapePtLat(shape.shapePtLat());
-            newShape.setShapePtLon(shape.shapePtLon());
-            newShape.setShapePtSequence(shape.shapePtSequence());
-            newShape.setShapeDistTraveled(shape.shapeDistTraveled());
-            ioShape.add(newShape);
-        });
+
+        ArrayList<Shape> list = copyEntities(entities, Shape.class, feedId);
+
         try
         {
-            shapeRepository.saveAllAndFlush(ioShape);
+            shapeRepository.saveAllAndFlush(list);
         }
         catch (Exception e)
         {
@@ -353,26 +277,15 @@ public class PostgresService
     public void addFeedInfoToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
     {
         GtfsTableContainer feedInfoContainer = feedContainer.getTableForFilename("feed_info.txt").orElseThrow(() -> new Exception("feed_info.txt not found"));
-        List<GtfsFeedInfo> entities = feedInfoContainer.getEntities();
-        List<FeedInfo> ioFeedInfo = new ArrayList<>();
+        List<GtfsEntity> entities = feedInfoContainer.getEntities();
+
         log.atInfo().log(String.format("Persisting FeedInfo : %d entries", entities.size()));
-        entities.forEach(feedInfo -> {
-            FeedInfo newFeedInfo = new FeedInfo();
-            newFeedInfo.setFeedId(feedId);
-            newFeedInfo.setCsvRowNumber(feedInfo.csvRowNumber());
-            newFeedInfo.setFeedPublisherName(feedInfo.feedPublisherName());
-            newFeedInfo.setFeedPublisherUrl(feedInfo.feedPublisherUrl());
-            newFeedInfo.setFeedLang(feedInfo.feedLang());
-            newFeedInfo.setFeedStartDate(feedInfo.feedStartDate().toYYYYMMDD());
-            newFeedInfo.setFeedEndDate(feedInfo.feedEndDate().toYYYYMMDD());
-            newFeedInfo.setFeedVersion(feedInfo.feedVersion());
-            newFeedInfo.setFeedDesc(feedInfo.feedDesc());
-            newFeedInfo.setFeedRemarks(feedInfo.feedRemarks());
-            ioFeedInfo.add(newFeedInfo);
-        });
+
+        ArrayList<FeedInfo> list = copyEntities(entities, FeedInfo.class, feedId);
+
         try
         {
-            feedInfoRepository.saveAllAndFlush(ioFeedInfo);
+            feedInfoRepository.saveAllAndFlush(list);
         }
         catch (Exception e)
         {
