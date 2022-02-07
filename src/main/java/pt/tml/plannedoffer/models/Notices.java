@@ -1,7 +1,13 @@
 package pt.tml.plannedoffer.models;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 public class Notices
 {
     private List<Notice> notices;
@@ -15,13 +21,4 @@ public class Notices
         this.notices = notices;
     }
 
-    public List<Notice> getNotices()
-    {
-        return notices;
-    }
-
-    public void setNotices(List<Notice> notices)
-    {
-        this.notices = notices;
-    }
 }

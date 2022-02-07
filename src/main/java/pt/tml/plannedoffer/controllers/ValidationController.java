@@ -17,7 +17,7 @@ import pt.tml.plannedoffer.database.PostgresServiceProxy;
 import pt.tml.plannedoffer.global.ApplicationState;
 import pt.tml.plannedoffer.models.PlannedOfferUpload;
 import pt.tml.plannedoffer.models.ResponseMessage;
-import pt.tml.plannedoffer.services.GtfsValidationService;
+import pt.tml.plannedoffer.gtfs.GtfsValidationService;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -1,7 +1,12 @@
 package pt.tml.plannedoffer.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 public class Notice
 {
     private String code;
@@ -21,43 +26,4 @@ public class Notice
         this.sampleNotices = sampleNotices;
     }
 
-    public String getCode()
-    {
-        return code;
-    }
-
-    public void setCode(String code)
-    {
-        this.code = code;
-    }
-
-    public String getSeverity()
-    {
-        return severity;
-    }
-
-    public void setSeverity(String severity)
-    {
-        this.severity = severity;
-    }
-
-    public int getTotalNotices()
-    {
-        return totalNotices;
-    }
-
-    public void setTotalNotices(int totalNotices)
-    {
-        this.totalNotices = totalNotices;
-    }
-
-    public List<NoticeType> getSampleNotices()
-    {
-        return sampleNotices;
-    }
-
-    public void setSampleNotices(List<NoticeType> sampleNotices)
-    {
-        this.sampleNotices = sampleNotices;
-    }
 }

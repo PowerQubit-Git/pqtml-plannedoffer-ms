@@ -13,7 +13,7 @@ import pt.tml.plannedoffer.models.PlannedOfferInfo;
 import pt.tml.plannedoffer.models.PlannedOfferUpload;
 import pt.tml.plannedoffer.models.Notices;
 import pt.tml.plannedoffer.models.ReportSummary;
-import pt.tml.plannedoffer.services.GtfsValidationService;
+import pt.tml.plannedoffer.gtfs.GtfsValidationService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
