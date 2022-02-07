@@ -10,7 +10,13 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Document(collection = "PlannedOfferUploads")
+
+
+//TODO
+
+@Document(collection = "IntendedOfferUploads")
+
+
 public class PlannedOfferUpload extends PlannedOfferInfo
 {
 

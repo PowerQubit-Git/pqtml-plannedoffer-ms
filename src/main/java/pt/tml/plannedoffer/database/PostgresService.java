@@ -1,5 +1,6 @@
 package pt.tml.plannedoffer.database;
 
+import com.google.gson.Gson;
 import lombok.Data;
 import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import pt.tml.plannedoffer.entities.*;
 import pt.tml.plannedoffer.repository.*;
 
 import javax.persistence.EntityManager;
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +82,66 @@ public class PostgresService
     @LogExecutionTime
     public void addAgencyToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
     {
-        GtfsTableContainer agencyContainer = feedContainer.getTableForFilename("agency.txt").orElseThrow(() -> new Exception("agency.txt not found"));
+        GtfsTableContainer agencyContainer = feedContainer.getTableForFilename("agency.txt")
+                .orElseThrow(() -> new Exception("agency.txt not found"));
+
+        List<GtfsEntity> entities = agencyContainer.getEntities();
+
+        log.atInfo().log(String.format("Persisting Agency : %d entries", entities.size()));
+
+        ArrayList<Agency> list = copyEntities(entities, Agency.class, feedId);
+
+        try
+        {
+            agencyRepository.saveAllAndFlush(list);
+        }
+        catch (Exception e)
+        {
+            log.atSevere().withCause(e).log();
+        }
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+    /**
+     *
+     * @param gtfsEntities
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public <T> ArrayList<T> copyEntities(List<GtfsEntity> gtfsEntities, T type, String feedId){
+        ArrayList<T> res = new ArrayList<T>();
+        gtfsEntities.forEach(e -> {
+            Gson gson = new Gson();
+            var newObj = gson.fromJson(gson.toJson(e), (Type) type);
+            ((pt.tml.plannedoffer.entities.FeedIdEntity) newObj).setFeedId(feedId);
+            res.add((T)newObj);
+        });
+        return res;
+    }
+
+
+
+
+    @LogExecutionTime
+    public void addAgencyToDatabaseOld(GtfsFeedContainer feedContainer, String feedId) throws Exception
+    {
+        GtfsTableContainer agencyContainer = feedContainer.getTableForFilename("agency.txt")
+                .orElseThrow(() -> new Exception("agency.txt not found"));
+
         List<GtfsAgency> entities = agencyContainer.getEntities();
         List<Agency> ioAgency = new ArrayList<>();
         log.atInfo().log(String.format("Persisting Agency : %d entries", entities.size()));
@@ -92,7 +154,6 @@ public class PostgresService
 //          newAgency.setAgencyTimezone(agency.agencyTimezone());
             newAgency.setAgencyLang(agency.agencyLang());
             newAgency.setCsvRowNumber(agency.csvRowNumber());
-            ioAgency.add(newAgency);
         });
         try
         {

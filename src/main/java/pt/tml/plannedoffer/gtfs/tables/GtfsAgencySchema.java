@@ -19,6 +19,8 @@ package pt.tml.plannedoffer.gtfs.tables;
 import pt.powerqubit.validator.core.annotation.*;
 import pt.powerqubit.validator.core.table.GtfsEntity;
 
+import javax.transaction.Transactional;
+import java.beans.Transient;
 import java.time.ZoneId;
 import java.util.Locale;
 
@@ -39,7 +41,9 @@ public interface GtfsAgencySchema extends GtfsEntity
     String agencyUrl();
 
     //  @Required
-    ZoneId agencyTimezone();
+
+    // @Transient
+    //   ZoneId agencyTimezone();
 
     @ConditionallyRequired
     Locale agencyLang();
