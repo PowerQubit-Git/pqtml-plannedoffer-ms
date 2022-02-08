@@ -3,13 +3,13 @@ package pt.tml.plannedoffer.entities;
 import com.google.gson.annotations.JsonAdapter;
 import com.opencsv.bean.CsvIgnore;
 import lombok.Data;
-import pt.powerqubit.validator.core.table.GtfsContinuousPickupDropOff;
-import pt.powerqubit.validator.core.table.GtfsDropOffType;
-import pt.powerqubit.validator.core.table.GtfsPickupType;
-import pt.powerqubit.validator.core.table.GtfsStopTimeTimepoint;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
+import pt.tml.plannedoffer.gtfs.tables.GtfsContinuousPickupDropOffEnum;
+import pt.tml.plannedoffer.gtfs.tables.GtfsDropOffTypeEnum;
+import pt.tml.plannedoffer.gtfs.tables.GtfsPickupTypeEnum;
+import pt.tml.plannedoffer.gtfs.tables.GtfsStopTimeTimepointEnum;
 
 import javax.persistence.*;
 
@@ -44,22 +44,22 @@ public class StopTime implements FeedIdEntity
     private String stopHeadsign;
 
     @Column(name = "ContinuousPickup")
-    private GtfsContinuousPickupDropOff continuousPickup;
+    private GtfsContinuousPickupDropOffEnum continuousPickup;
 
     @Column(name = "ContinuousDropOff")
-    private GtfsContinuousPickupDropOff continuousDropOff;
+    private GtfsContinuousPickupDropOffEnum continuousDropOff;
 
     @Column(name = "ShapeDistTraveled")
     private double shapeDistTraveled;
 
     @Column(name = "PickupType")
-    private GtfsPickupType pickupType;
+    private GtfsPickupTypeEnum pickupType;
 
     @Column(name = "DropOffType")
-    private GtfsDropOffType dropOffType;
+    private GtfsDropOffTypeEnum dropOffType;
 
     @Column(name = "Timepoint")
-    private GtfsStopTimeTimepoint timepoint;
+    private GtfsStopTimeTimepointEnum timepoint;
 
     @Id
     @CsvIgnore

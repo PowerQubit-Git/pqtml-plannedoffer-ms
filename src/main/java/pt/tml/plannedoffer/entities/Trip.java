@@ -2,12 +2,12 @@ package pt.tml.plannedoffer.entities;
 
 import com.opencsv.bean.CsvIgnore;
 import lombok.Data;
-import pt.powerqubit.validator.core.table.GtfsBikesAllowed;
-import pt.powerqubit.validator.core.table.GtfsTripDirectionId;
-import pt.powerqubit.validator.core.table.GtfsWheelchairBoarding;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
+import pt.tml.plannedoffer.gtfs.tables.GtfsBikesAllowedEnum;
+import pt.tml.plannedoffer.gtfs.tables.GtfsTripDirectionIdEnum;
+import pt.tml.plannedoffer.gtfs.tables.GtfsWheelchairBoardingEnum;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -46,7 +46,7 @@ public class Trip implements FeedIdEntity
     private String tripShortName;
 
     @Column(name = "DirectionId")
-    private GtfsTripDirectionId directionId;
+    private GtfsTripDirectionIdEnum directionId;
 
     @Column(name = "BlockId")
     private String blockId;
@@ -56,10 +56,10 @@ public class Trip implements FeedIdEntity
 
     @CsvIgnore
     @Column(name = "WheelchairAccessible")
-    private GtfsWheelchairBoarding wheelchairAccessible;
+    private GtfsWheelchairBoardingEnum wheelchairAccessible;
 
     @Column(name = "BikesAllowed")
-    private GtfsBikesAllowed bikesAllowed;
+    private GtfsBikesAllowedEnum bikesAllowed;
 
     @Id
     @CsvIgnore
