@@ -3,10 +3,10 @@ package pt.tml.plannedoffer.entities;
 import com.opencsv.bean.CsvIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import pt.powerqubit.validator.core.table.GtfsAttributionRole;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
-import pt.tml.plannedoffer.gtfs.tables.GtfsAttributionRoleEnum;
 
 import javax.persistence.*;
 
@@ -35,13 +35,13 @@ public class Attribution implements FeedIdEntity
     private String organizationName;
 
     @Column(name = "IsProducer")
-    private GtfsAttributionRoleEnum isProducer;
+    private GtfsAttributionRole isProducer;
 
     @Column(name = "IsOperator")
-    private GtfsAttributionRoleEnum isOperator;
+    private GtfsAttributionRole isOperator;
 
     @Column(name = "IsAuthority")
-    private GtfsAttributionRoleEnum isAuthority;
+    private GtfsAttributionRole isAuthority;
 
     @Column(name = "AttributionUrl")
     private String attributionUrl;

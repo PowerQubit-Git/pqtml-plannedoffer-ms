@@ -8,7 +8,6 @@ import pt.powerqubit.validator.core.type.GtfsColor;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
-import pt.tml.plannedoffer.gtfs.tables.GtfsColorEnum;
 
 import javax.persistence.*;
 
@@ -77,11 +76,11 @@ public class Route implements FeedIdEntity
     @Column(name = "RouteUrl")
     private String routeUrl;
 
-    @Column(name = "RouteColor")
-    private GtfsColorEnum routeColor;
-
-    @Column(name = "RouteTextColor")
-    private GtfsColorEnum routeTextColor;
+//    @Column(name = "RouteColor")
+//    private GtfsColor routeColor;
+//
+//    @Column(name = "RouteTextColor")
+//    private GtfsColor routeTextColor;
 
     @Column(name = "RouteSortOrder")
     private int routeSortOrder;

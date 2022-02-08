@@ -2,10 +2,10 @@ package pt.tml.plannedoffer.entities;
 
 import com.opencsv.bean.CsvIgnore;
 import lombok.Data;
+import pt.powerqubit.validator.core.table.GtfsCalendarService;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
-import pt.tml.plannedoffer.gtfs.tables.GtfsCalendarServiceEnum;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -29,25 +29,25 @@ public class Calendar implements FeedIdEntity
     private String period;
 
     @Column(name = "Monday")
-    private GtfsCalendarServiceEnum monday;
+    private GtfsCalendarService monday;
 
     @Column(name = "Tuesday")
-    private GtfsCalendarServiceEnum tuesday;
+    private GtfsCalendarService tuesday;
 
     @Column(name = "Wednesday")
-    private GtfsCalendarServiceEnum wednesday;
+    private GtfsCalendarService wednesday;
 
     @Column(name = "Thursday")
-    private GtfsCalendarServiceEnum thursday;
+    private GtfsCalendarService thursday;
 
     @Column(name = "Friday")
-    private GtfsCalendarServiceEnum friday;
+    private GtfsCalendarService friday;
 
     @Column(name = "Saturday")
-    private GtfsCalendarServiceEnum saturday;
+    private GtfsCalendarService saturday;
 
     @Column(name = "Sunday")
-    private GtfsCalendarServiceEnum sunday;
+    private GtfsCalendarService sunday;
 
     @Column(name = "StartDate")
     private LocalDate startDate;

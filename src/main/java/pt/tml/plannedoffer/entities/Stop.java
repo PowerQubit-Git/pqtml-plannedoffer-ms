@@ -48,52 +48,52 @@ public class Stop implements FeedIdEntity
     private double stopLon;
 
     @Column(name = "ZoneShift")
-    private GtfsZoneShiftEnum zoneShift;
+    private GtfsZoneShift zoneShift;
 
     @Column(name = "LocationType")
-    private GtfsLocationTypeEnum locationType;
+    private GtfsLocationType locationType;
 
     @Column(name = "ParentStation")
     private String parentStation;
 
     @Column(name = "WheelchairBoarding")
-    private GtfsWheelchairBoardingEnum wheelchairBoarding;
+    private GtfsWheelchairBoarding wheelchairBoarding;
 
     @Column(name = "PlatformCode")
     private String platformCode;
 
     @Column(name = "EntranceRestriction")
-    private GtfsEntranceRestrictionEnum entranceRestriction;
+    private GtfsEntranceRestriction entranceRestriction;
 
     @Column(name = "ExitRestriction")
-    private GtfsExitRestrictionEnum exitRestriction;
+    private GtfsExitRestriction exitRestriction;
 
     @Column(name = "Slot")
-    private GtfsSlotEnum slot;
+    private GtfsSlot slot;
 
     @Column(name = "Signalling")
-    private GtfsSignallingEnum signalling;
+    private GtfsSignalling signalling;
 
     @Column(name = "Shelter")
-    private GtfsShelterEnum shelter;
+    private GtfsShelter shelter;
 
     @Column(name = "Bench")
-    private GtfsBenchEnum bench;
+    private GtfsBench bench;
 
     @Column(name = "NetworkMap")
-    private GtfsNetworkMapEnum networkMap;
+    private GtfsNetworkMap networkMap;
 
     @Column(name = "Schedule")
-    private GtfsScheduleEnum schedule;
+    private GtfsSchedule schedule;
 
     @Column(name = "RealTimeInformation")
-    private GtfsRealTimeInformationEnum realTimeInformation;
+    private GtfsRealTimeInformation realTimeInformation;
 
     @Column(name = "Tariff")
-    private GtfsTariffEnum tariff;
+    private GtfsTariff tariff;
 
     @Column(name = "PreservationState")
-    private GtfsPreservationStateEnum preservationState;
+    private GtfsPreservationState preservationState;
 
     @Column(name = "Equipment")
     private String equipment;
@@ -105,13 +105,13 @@ public class Stop implements FeedIdEntity
     private String region;
 
     @Column(name = "Municipality")
-    private GtfsMunicipalityEnum municipality;
+    private GtfsMunicipality municipality;
 
     @Column(name = "MunicipalityFare1")
-    private GtfsMunicipalityFare1Enum municipalityFare1;
+    private GtfsMunicipalityFare1 municipalityFare1;
 
     @Column(name = "MunicipalityFare2")
-    private GtfsMunicipalityFare2Enum municipalityFare2;
+    private GtfsMunicipalityFare2 municipalityFare2;
 
     @Id
     @CsvIgnore

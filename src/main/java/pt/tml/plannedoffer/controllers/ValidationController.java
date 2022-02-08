@@ -144,7 +144,7 @@ public class ValidationController
 
             //Watchout !!!
 //            persistEntitiesToDatabase(gtfsFeedContainer, offerPlanId);
-            ApplicationState.entityPersistenceBusy = true;
+            ApplicationState.entityPersistenceBusy = false;
 
             var response = new ValidationResult(true,errorNotices.getTotalNotices(),warningNotices.getTotalNotices(),infoNotices.getTotalNotices(), "Validation Completed");
             return ResponseEntity.status(HttpStatus.OK).body(response);

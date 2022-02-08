@@ -3,11 +3,11 @@ package pt.tml.plannedoffer.entities;
 import com.opencsv.bean.CsvIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import pt.powerqubit.validator.core.table.GtfsFareAttributePaymentMethod;
+import pt.powerqubit.validator.core.table.GtfsFareAttributeTransfers;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
-import pt.tml.plannedoffer.gtfs.tables.GtfsFareAttributePaymentMethodEnum;
-import pt.tml.plannedoffer.gtfs.tables.GtfsFareAttributeTransfersEnum;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -34,10 +34,10 @@ public class FareAttributes implements FeedIdEntity
     private Currency currencyType;
 
     @Column(name = "PaymentMethod")
-    private GtfsFareAttributePaymentMethodEnum paymentMethod;
+    private GtfsFareAttributePaymentMethod paymentMethod;
 
     @Column(name = "Transfers")
-    private GtfsFareAttributeTransfersEnum transfers;
+    private GtfsFareAttributeTransfers transfers;
 
     @Column(name = "AgencyId")
     private String agencyId;

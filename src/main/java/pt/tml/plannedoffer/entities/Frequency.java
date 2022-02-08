@@ -36,19 +36,19 @@ public class Frequency implements FeedIdEntity
     private int frequency;
 
     @Column(name = "ExactTimes")
-    private GtfsFrequencyExactTimesEnum exactTimes;
+    private GtfsFrequencyExactTimes exactTimes;
 
     @Column(name = "Typology")
-    private GtfsTypologyEnum typology;
+    private GtfsTypology typology;
 
     @Column(name = "Propulsion")
-    private GtfsPropulsionEnum propulsion;
+    private GtfsPropulsion propulsion;
 
     @Column(name = "PassengerCounting")
-    private GtfsPassengerCountingEnum passengerCounting;
+    private GtfsPassengerCounting passengerCounting;
 
     @Column(name = "VideoSurveillance")
-    private GtfsVideoSurveillanceEnum videoSurveillance;
+    private GtfsVideoSurveillance videoSurveillance;
 
     @Id
     @CsvIgnore
