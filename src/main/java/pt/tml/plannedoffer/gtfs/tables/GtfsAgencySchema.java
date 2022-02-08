@@ -40,7 +40,6 @@ public interface GtfsAgencySchema extends GtfsEntity
     @FieldType(FieldTypeEnum.URL)
     String agencyUrl();
 
-    @JsonIgnore
     ZoneId agencyTimezone();
 
     @ConditionallyRequired
