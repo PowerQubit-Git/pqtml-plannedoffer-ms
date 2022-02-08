@@ -1,6 +1,7 @@
 package pt.tml.plannedoffer.controllers;
 
 import lombok.extern.flogger.Flogger;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +16,14 @@ import pt.tml.plannedoffer.aspects.LogExecutionTime;
 import pt.tml.plannedoffer.database.MongoDbService;
 import pt.tml.plannedoffer.database.PostgresServiceProxy;
 import pt.tml.plannedoffer.global.ApplicationState;
+import pt.tml.plannedoffer.models.Notice;
 import pt.tml.plannedoffer.models.PlannedOfferUpload;
 import pt.tml.plannedoffer.models.ResponseMessage;
 import pt.tml.plannedoffer.gtfs.GtfsValidationService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Flogger
 @RestController
@@ -105,6 +109,13 @@ public class ValidationController
         offerPlan.setErrorsReport(validatorService.getErrorsReport());
         offerPlan.setTableResumeList(validatorService.getSummaryList());
 
+        var notices = offerPlan.getValidationReport().getNotices();
+        var errorNotices = notices.stream().filter(n->n.getSeverity()=="ERROR").findFirst().orElse(new Notice());
+        var warningNotices = notices.stream().filter(n->n.getSeverity()=="WARNING").findFirst().orElse(new Notice());
+        var infoNotices = notices.stream().filter(n->n.getSeverity()=="INFO").findFirst().orElse(new Notice());
+
+        log.atInfo().log(String.format("********** Erros : %d    Warnings : %d     INFOS : %d", errorNotices.getTotalNotices(), warningNotices.getTotalNotices() , infoNotices.getTotalNotices()));
+
         //
         //  Save plan to MongoDb
         //  with added status and reports
@@ -112,7 +123,8 @@ public class ValidationController
         mongoService.savePlan(offerPlan);
 
         GtfsFeedContainer gtfsFeedContainer = validatorService.getFeedContainer();
-        if (gtfsFeedContainer.isParsedSuccessfully())
+
+        if (gtfsFeedContainer.isParsedSuccessfully() && errorNotices.getTotalNotices() == 0)
         {
             ApplicationState.validationBusy = false;
             ApplicationState.entityPersistenceBusy = true;
@@ -120,7 +132,11 @@ public class ValidationController
             // Perform database functions like
             // - calculating frequencies
             // Async
-            persistEntitiesToDatabase(gtfsFeedContainer, offerPlanId);
+
+            //Watchout !!!
+//            persistEntitiesToDatabase(gtfsFeedContainer, offerPlanId);
+            ApplicationState.entityPersistenceBusy = true;
+
 
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("validation completed"));
         }
@@ -128,7 +144,7 @@ public class ValidationController
         {
             ApplicationState.validationBusy = false;
             ApplicationState.entityPersistenceBusy = false;
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body((new ResponseMessage("validation failed")));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("validation failed"));
         }
     }
 

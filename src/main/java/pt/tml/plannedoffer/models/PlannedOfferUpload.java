@@ -14,7 +14,7 @@ import java.util.List;
 
 //TODO
 
-@Document(collection = "IntendedOfferUploads")
+@Document(collection = "PlannedOfferUploads")
 
 
 public class PlannedOfferUpload extends PlannedOfferInfo
