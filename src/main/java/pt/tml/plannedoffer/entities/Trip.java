@@ -42,8 +42,14 @@ public class Trip implements FeedIdEntity
     @Column(name = "TripHeadsign")
     private String tripHeadsign;
 
+    @Column(name = "TripShortName")
+    private String tripShortName;
+
     @Column(name = "DirectionId")
     private GtfsTripDirectionId directionId;
+
+    @Column(name = "BlockId")
+    private String blockId;
 
     @Column(name = "ShapeId")
     private String shapeId;

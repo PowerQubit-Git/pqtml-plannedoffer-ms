@@ -3,6 +3,7 @@ package pt.tml.plannedoffer.entities;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 import pt.powerqubit.validator.core.table.*;
+import pt.powerqubit.validator.core.type.GtfsColor;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @CsvFileName("routes.txt")
 @CsvBindByNameOrder({"LineId", "LineShortName", "LineLongName", "RouteId", "AgencyId", "RouteOrigin", "RouteDestination",
         "RouteShortName", "RouteLongName ", "RouteDesc", "RouteRemarks", "RouteType", "Contract", "PathType", "Circular",
-        "School", "ContinuousPickup", "ContinuousDropOff"})
+        "School", "routeUrl", "routeColor", "routeTextColor", "routeSortOrder", "ContinuousPickup", "ContinuousDropOff"})
 
 @IdClass(CsvRowFeedIdCompositeKey.class)
 public class Route implements FeedIdEntity
@@ -70,6 +71,18 @@ public class Route implements FeedIdEntity
 
     @Column(name = "School")
     private GtfsSchool school;
+
+    @Column(name = "RouteUrl")
+    private String routeUrl;
+
+    @Column(name = "RouteColor")
+    private GtfsColor routeColor;
+
+    @Column(name = "RouteTextColor")
+    private GtfsColor routeTextColor;
+
+    @Column(name = "RouteSortOrder")
+    private int routeSortOrder;
 
     @Column(name = "ContinuousPickup")
     private GtfsContinuousPickupDropOff continuousPickup;
