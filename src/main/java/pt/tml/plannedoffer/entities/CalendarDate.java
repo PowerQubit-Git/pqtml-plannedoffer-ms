@@ -2,11 +2,11 @@ package pt.tml.plannedoffer.entities;
 
 import com.opencsv.bean.CsvIgnore;
 import lombok.Data;
-import pt.powerqubit.validator.core.table.GtfsCalendarDateExceptionType;
-import pt.powerqubit.validator.core.table.GtfsHoliday;
-import pt.powerqubit.validator.core.table.GtfsPeriod;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
+import pt.tml.plannedoffer.gtfs.tables.GtfsCalendarDateExceptionTypeEnum;
+import pt.tml.plannedoffer.gtfs.tables.GtfsHolidayEnum;
+import pt.tml.plannedoffer.gtfs.tables.GtfsPeriodEnum;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -27,10 +27,10 @@ public class CalendarDate implements FeedIdEntity
     private String calendarName;
 
     @Column(name = "Holiday")
-    private GtfsHoliday holiday;
+    private GtfsHolidayEnum holiday;
 
     @Column(name = "Period")
-    private GtfsPeriod period;
+    private GtfsPeriodEnum period;
 
     @Column(name = "Date")
     private LocalDate date;
@@ -45,6 +45,6 @@ public class CalendarDate implements FeedIdEntity
     @Column(name = "CsvRowNumber")
     private long csvRowNumber;
 
-    private GtfsCalendarDateExceptionType exceptionType;
+    private GtfsCalendarDateExceptionTypeEnum exceptionType;
 
 }

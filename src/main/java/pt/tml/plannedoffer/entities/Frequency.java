@@ -6,6 +6,7 @@ import pt.powerqubit.validator.core.table.*;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
+import pt.tml.plannedoffer.gtfs.tables.*;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -35,19 +36,19 @@ public class Frequency implements FeedIdEntity
     private int frequency;
 
     @Column(name = "ExactTimes")
-    private GtfsFrequencyExactTimes exactTimes;
+    private GtfsFrequencyExactTimesEnum exactTimes;
 
     @Column(name = "Typology")
-    private GtfsTypology typology;
+    private GtfsTypologyEnum typology;
 
     @Column(name = "Propulsion")
-    private GtfsPropulsion propulsion;
+    private GtfsPropulsionEnum propulsion;
 
     @Column(name = "PassengerCounting")
-    private GtfsPassengerCounting passengerCounting;
+    private GtfsPassengerCountingEnum passengerCounting;
 
     @Column(name = "VideoSurveillance")
-    private GtfsVideoSurveillance videoSurveillance;
+    private GtfsVideoSurveillanceEnum videoSurveillance;
 
     @Id
     @CsvIgnore

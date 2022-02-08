@@ -6,6 +6,7 @@ import pt.powerqubit.validator.core.table.*;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
+import pt.tml.plannedoffer.gtfs.tables.*;
 
 import javax.persistence.*;
 
@@ -47,52 +48,52 @@ public class Stop implements FeedIdEntity
     private double stopLon;
 
     @Column(name = "ZoneShift")
-    private GtfsZoneShift zoneShift;
+    private GtfsZoneShiftEnum zoneShift;
 
     @Column(name = "LocationType")
-    private GtfsLocationType locationType;
+    private GtfsLocationTypeEnum locationType;
 
     @Column(name = "ParentStation")
     private String parentStation;
 
     @Column(name = "WheelchairBoarding")
-    private GtfsWheelchairBoarding wheelchairBoarding;
+    private GtfsWheelchairBoardingEnum wheelchairBoarding;
 
     @Column(name = "PlatformCode")
     private String platformCode;
 
     @Column(name = "EntranceRestriction")
-    private GtfsEntranceRestriction entranceRestriction;
+    private GtfsEntranceRestrictionEnum entranceRestriction;
 
     @Column(name = "ExitRestriction")
-    private GtfsExitRestriction exitRestriction;
+    private GtfsExitRestrictionEnum exitRestriction;
 
     @Column(name = "Slot")
-    private GtfsSlot slot;
+    private GtfsSlotEnum slot;
 
     @Column(name = "Signalling")
-    private GtfsSignalling signalling;
+    private GtfsSignallingEnum signalling;
 
     @Column(name = "Shelter")
-    private GtfsShelter shelter;
+    private GtfsShelterEnum shelter;
 
     @Column(name = "Bench")
-    private GtfsBench bench;
+    private GtfsBenchEnum bench;
 
     @Column(name = "NetworkMap")
-    private GtfsNetworkMap networkMap;
+    private GtfsNetworkMapEnum networkMap;
 
     @Column(name = "Schedule")
-    private GtfsSchedule schedule;
+    private GtfsScheduleEnum schedule;
 
     @Column(name = "RealTimeInformation")
-    private GtfsRealTimeInformation realTimeInformation;
+    private GtfsRealTimeInformationEnum realTimeInformation;
 
     @Column(name = "Tariff")
-    private GtfsTariff tariff;
+    private GtfsTariffEnum tariff;
 
     @Column(name = "PreservationState")
-    private GtfsPreservationState preservationState;
+    private GtfsPreservationStateEnum preservationState;
 
     @Column(name = "Equipment")
     private String equipment;
@@ -104,13 +105,13 @@ public class Stop implements FeedIdEntity
     private String region;
 
     @Column(name = "Municipality")
-    private GtfsMunicipality municipality;
+    private GtfsMunicipalityEnum municipality;
 
     @Column(name = "MunicipalityFare1")
-    private GtfsMunicipalityFare1 municipalityFare1;
+    private GtfsMunicipalityFare1Enum municipalityFare1;
 
     @Column(name = "MunicipalityFare2")
-    private GtfsMunicipalityFare2 municipalityFare2;
+    private GtfsMunicipalityFare2Enum municipalityFare2;
 
     @Id
     @CsvIgnore

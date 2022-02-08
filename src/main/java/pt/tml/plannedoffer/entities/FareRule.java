@@ -3,8 +3,6 @@ package pt.tml.plannedoffer.entities;
 import com.opencsv.bean.CsvIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import pt.powerqubit.validator.core.table.GtfsFareAttributePaymentMethod;
-import pt.powerqubit.validator.core.table.GtfsFareAttributeTransfers;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
