@@ -26,15 +26,15 @@ public class PostgresServiceProxy
     {
 
 //      postgresService.addFeedInfoToDatabase(feedContainer, feedId);
-        postgresService.addAgencyToDatabase(feedContainer, feedId);
+//        postgresService.addAgencyToDatabase(feedContainer, feedId);
 //      postgresService.addStopsToDatabase(feedContainer, feedId);
 //      postgresService.addRoutesToDatabase(feedContainer, feedId);
 //      postgresService.addTripsToDatabase(feedContainer, feedId);
-//      postgresService.addStopTimesToDatabase(feedContainer, feedId);
+      postgresService.addStopTimesToDatabase(feedContainer, feedId);
 //      postgresService.addShapesToDatabase(feedContainer, feedId);
 //      postgresService.addCalendarToDatabase(feedContainer, feedId);
 //      postgresService.addCalendarDatesToDatabase(feedContainer, feedId); // TODO: MUST SKIP OR EXPORT THIS ONE
-//      postgresService.generateFrequencies(feedId);
+      postgresService.generateFrequencies(feedId);
         ApplicationState.validationBusy = false;
         ApplicationState.entityPersistenceBusy = false;
     }

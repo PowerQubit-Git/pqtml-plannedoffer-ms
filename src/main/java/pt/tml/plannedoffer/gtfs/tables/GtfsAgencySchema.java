@@ -16,6 +16,7 @@
 
 package pt.tml.plannedoffer.gtfs.tables;
 
+import com.google.gson.annotations.JsonAdapter;
 import pt.powerqubit.validator.core.annotation.*;
 import pt.powerqubit.validator.core.table.GtfsEntity;
 
@@ -37,13 +38,10 @@ public interface GtfsAgencySchema extends GtfsEntity
     String agencyName();
 
     @FieldType(FieldTypeEnum.URL)
-//  @Required
     String agencyUrl();
 
-    //  @Required
-
-    // @Transient
-    //   ZoneId agencyTimezone();
+    @JsonIgnore
+    ZoneId agencyTimezone();
 
     @ConditionallyRequired
     Locale agencyLang();

@@ -11,11 +11,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableMongoRepositories
 @EnableAspectJAutoProxy
 @EnableAsync
-public class MainApplication
+public class MsApplication
 {
     public static void main(String[] args)
     {
-        SpringApplication.run(MainApplication.class, args);
+        SpringApplication.run(MsApplication.class, args);
     }
 }
 

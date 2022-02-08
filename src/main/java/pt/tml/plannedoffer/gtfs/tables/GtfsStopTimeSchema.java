@@ -16,6 +16,7 @@
 
 package pt.tml.plannedoffer.gtfs.tables;
 
+import com.google.gson.annotations.JsonAdapter;
 import pt.powerqubit.validator.core.annotation.*;
 import pt.powerqubit.validator.core.table.*;
 import pt.powerqubit.validator.core.type.GtfsTime;
