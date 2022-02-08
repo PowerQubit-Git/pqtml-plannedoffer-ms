@@ -1,5 +1,6 @@
 package pt.tml.plannedoffer.entities;
 
+import com.opencsv.bean.CsvIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,4 +57,14 @@ public class Pathway
 
     @Column(name = "ReversedSignpostedAs")
     private String reversedSignpostedAs;
+
+    @Id
+    @CsvIgnore()
+    @Column(name = "FeedId")
+    private String feedId;
+
+    @Id
+    @CsvIgnore()
+    @Column(name = "CsvRowNumber")
+    private long csvRowNumber;
 }

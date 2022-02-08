@@ -2,11 +2,13 @@ package pt.tml.plannedoffer.entities;
 
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
+import pt.powerqubit.validator.core.annotation.ConditionallyRequired;
 import pt.powerqubit.validator.core.table.*;
 import pt.powerqubit.validator.core.type.GtfsColor;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
+import pt.tml.plannedoffer.gtfs.tables.GtfsColorEnum;
 
 import javax.persistence.*;
 
@@ -76,10 +78,10 @@ public class Route implements FeedIdEntity
     private String routeUrl;
 
     @Column(name = "RouteColor")
-    private GtfsColor routeColor;
+    private GtfsColorEnum routeColor;
 
     @Column(name = "RouteTextColor")
-    private GtfsColor routeTextColor;
+    private GtfsColorEnum routeTextColor;
 
     @Column(name = "RouteSortOrder")
     private int routeSortOrder;

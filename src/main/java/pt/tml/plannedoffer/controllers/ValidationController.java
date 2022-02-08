@@ -40,7 +40,7 @@ public class ValidationController
     GtfsValidationService validatorService;
 
     @PostMapping("validate")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("offerPlanId") String offerPlanId, @RequestParam("user") String publisher, HttpServletRequest request) throws Exception
+    public ResponseEntity<ValidationResult> uploadFile(@RequestParam("offerPlanId") String offerPlanId, @RequestParam("user") String publisher, HttpServletRequest request) throws Exception
     {
         PlannedOfferUpload offerPlan;
         Binary zipFile;
@@ -51,7 +51,9 @@ public class ValidationController
         if (ApplicationState.uploadBusy || ApplicationState.validationBusy || ApplicationState.entityPersistenceBusy)
         {
             log.atWarning().log(String.format("Validation request refused in busy state u:%s v:%s p:%s", ApplicationState.uploadBusy, ApplicationState.validationBusy, ApplicationState.entityPersistenceBusy));
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("service busy"));
+            var response = new ValidationResult();
+            response.setMessage("Service Busy");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
 
         ApplicationState.validationBusy = true;
@@ -64,8 +66,9 @@ public class ValidationController
             offerPlan = mongoService.getPlan(offerPlanId);
             if (offerPlanId == null)
             {
-                String errorString = String.format("given feed id is null");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(errorString));
+                var response = new ValidationResult();
+                response.setMessage("given feed id is null");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
             // check file content present
             if (offerPlan.getFile() == null)
@@ -73,7 +76,9 @@ public class ValidationController
                 String errorString = String.format("feed with id : %s not found", offerPlanId);
                 log.atWarning().log(errorString);
                 ApplicationState.validationBusy = false;
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ResponseMessage(errorString));
+                var response = new ValidationResult();
+                response.setMessage(errorString);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
             }
         }
         catch (Exception e)
@@ -81,7 +86,9 @@ public class ValidationController
             String errorString = String.format("error obtaining feed with id : %s", offerPlanId);
             log.atSevere().log(errorString);
             ApplicationState.validationBusy = false;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage(errorString));
+            var response = new ValidationResult();
+            response.setMessage(errorString);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
 
         //
@@ -97,7 +104,9 @@ public class ValidationController
             String errorString = String.format("error validating feed id : %s", offerPlanId);
             log.atSevere().log(errorString);
             ApplicationState.validationBusy = true;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage(errorString));
+            var response = new ValidationResult();
+            response.setMessage(errorString);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
 
 
@@ -137,16 +146,18 @@ public class ValidationController
 //            persistEntitiesToDatabase(gtfsFeedContainer, offerPlanId);
             ApplicationState.entityPersistenceBusy = true;
 
-
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("validation completed"));
+            var response = new ValidationResult(true,errorNotices.getTotalNotices(),warningNotices.getTotalNotices(),infoNotices.getTotalNotices(), "Validation Completed");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
         else
         {
             ApplicationState.validationBusy = false;
             ApplicationState.entityPersistenceBusy = false;
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("validation failed"));
+            var response = new ValidationResult(false,errorNotices.getTotalNotices(),warningNotices.getTotalNotices(),infoNotices.getTotalNotices(), "Validation Failed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
 
 
     @Async
