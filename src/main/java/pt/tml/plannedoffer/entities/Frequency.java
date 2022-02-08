@@ -2,10 +2,7 @@ package pt.tml.plannedoffer.entities;
 
 import com.opencsv.bean.CsvIgnore;
 import lombok.Data;
-import pt.powerqubit.validator.core.table.GtfsPassengerCounting;
-import pt.powerqubit.validator.core.table.GtfsPropulsion;
-import pt.powerqubit.validator.core.table.GtfsTypology;
-import pt.powerqubit.validator.core.table.GtfsVideoSurveillance;
+import pt.powerqubit.validator.core.table.*;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
@@ -17,7 +14,7 @@ import java.time.LocalTime;
 @Data
 @Table(name = "frequencies")
 @CsvFileName("frequencies.txt")
-@CsvBindByNameOrder({"TripId", "StartTime", "EndTime", "Frequency", "Typology", "Propulsion", "PassengerCounting", "VideoSurveillance"})
+@CsvBindByNameOrder({"TripId", "StartTime", "EndTime", "HeadwaySecs", "Frequency", "ExactTimes", "Typology", "Propulsion", "PassengerCounting", "VideoSurveillance"})
 @IdClass(CsvRowFeedIdCompositeKey.class)
 public class Frequency implements FeedIdEntity
 {
@@ -31,8 +28,14 @@ public class Frequency implements FeedIdEntity
     @Column(name = "EndTime")
     private LocalTime endTime;
 
+    @Column(name = "HeadwaySecs")
+    private int headwaySecs;
+
     @Column(name = "Frequency")
     private int frequency;
+
+    @Column(name = "ExactTimes")
+    private GtfsFrequencyExactTimes exactTimes;
 
     @Column(name = "Typology")
     private GtfsTypology typology;

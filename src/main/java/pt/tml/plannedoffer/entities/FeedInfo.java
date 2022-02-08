@@ -43,6 +43,12 @@ public class FeedInfo implements FeedIdEntity {
     @Column(name = "FeedRemarks")
     private String feedRemarks;
 
+    @Column(name = "FeedContactEmail")
+    private String feedContactEmail;
+
+    @Column(name = "FeedContactUrl")
+    private String feedContactUrl;
+
     @Id
     @CsvIgnore
     @Column(name = "FeedId")
