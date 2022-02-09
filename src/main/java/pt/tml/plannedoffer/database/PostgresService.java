@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import pt.powerqubit.validator.core.table.*;
 import pt.tml.plannedoffer.aspects.LogExecutionTime;
+import pt.tml.plannedoffer.database.mappers.AgencyMapper;
+import pt.tml.plannedoffer.database.mappers.FeedInfoMapper;
 import pt.tml.plannedoffer.entities.*;
 import pt.tml.plannedoffer.repository.*;
 
@@ -71,24 +73,14 @@ public class PostgresService
     @LogExecutionTime
     public void addAgencyToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
     {
-        GtfsTableContainer agencyContainer = feedContainer.getTableForFilename("agency.txt").orElseThrow(() -> new Exception("agency.txt not found"));
-        List<GtfsAgency> entities = agencyContainer.getEntities();
-        List<Agency> ioAgency = new ArrayList<>();
-        log.atInfo().log(String.format("Persisting Agency : %d entries", entities.size()));
-        entities.forEach(agency -> {
-            Agency newAgency = new Agency();
-            newAgency.setFeedId(feedId);
-            newAgency.setAgencyId(agency.agencyId());
-            newAgency.setAgencyName(agency.agencyName());
-            newAgency.setAgencyUrl(agency.agencyUrl());
-//          newAgency.setAgencyTimezone(agency.agencyTimezone());
-            newAgency.setAgencyLang(agency.agencyLang());
-            newAgency.setCsvRowNumber(agency.csvRowNumber());
-            ioAgency.add(newAgency);
-        });
+        var tableName = "agency.txt";
+        GtfsTableContainer container = feedContainer.getTableForFilename(tableName)
+                .orElseThrow(() -> new Exception(String.format("%s not found", tableName)));
+        var out = AgencyMapper.map(tableName, container, feedId);
+
         try
         {
-            agencyRepository.saveAllAndFlush(ioAgency);
+            agencyRepository.saveAllAndFlush(out);
         }
         catch (Exception e)
         {
@@ -108,6 +100,10 @@ public class PostgresService
         List<GtfsStop> entities = stopsContainer.getEntities();
         List<Stop> ioStops = new ArrayList<>();
         log.atInfo().log(String.format("Persisting Stops : %d entries", entities.size()));
+
+        // datas horas objetos
+
+
         entities.forEach(stop -> {
             Stop newStop = new Stop();
             newStop.setFeedId(feedId);
@@ -238,7 +234,6 @@ public class PostgresService
         }
     }
 
-
     /**
      * Add StopTimes fields to database
      * (Inserts records in "stop_times" table)
@@ -250,22 +245,31 @@ public class PostgresService
         List<GtfsStopTime> entities = stopTimeContainer.getEntities();
         List<StopTime> ioStopTime = new ArrayList<>();
         log.atInfo().log(String.format("Persisting StopTimes : %d entries", entities.size()));
-        entities.forEach(stopTime -> {
-            StopTime newStopTime = new StopTime();
-            newStopTime.setFeedId(feedId);
-            newStopTime.setCsvRowNumber(stopTime.csvRowNumber());
-            newStopTime.setTripId(stopTime.tripId());
-            newStopTime.setArrivalTime(stopTime.arrivalTime().toHHMMSS());
-            newStopTime.setDepartureTime(stopTime.departureTime().toHHMMSS());
-            newStopTime.setStopId(stopTime.stopId());
-            newStopTime.setStopSequence(stopTime.stopSequence());
-            newStopTime.setStopHeadsign(stopTime.stopHeadsign());
-            newStopTime.setContinuousPickup(stopTime.continuousPickup());
-            newStopTime.setContinuousDropOff(stopTime.continuousDropOff());
-            newStopTime.setShapeDistTraveled(stopTime.shapeDistTraveled());
-            newStopTime.setTimepoint(stopTime.timepoint());
-            ioStopTime.add(newStopTime);
-        });
+
+
+//        entities.forEach(entity -> {
+//
+//            StopTime st = StopTimesMapper.INSTANCE.map(new StopTime());
+//            ioStopTime.add(st);
+//        });
+
+
+//        entities.forEach(stopTime -> {
+//            StopTime newStopTime = new StopTime();
+//            newStopTime.setFeedId(feedId);
+//            newStopTime.setCsvRowNumber(stopTime.csvRowNumber());
+//            newStopTime.setTripId(stopTime.tripId());
+//            newStopTime.setArrivalTime(stopTime.arrivalTime().toHHMMSS());
+//            newStopTime.setDepartureTime(stopTime.departureTime().toHHMMSS());
+//            newStopTime.setStopId(stopTime.stopId());
+//            newStopTime.setStopSequence(stopTime.stopSequence());
+//            newStopTime.setStopHeadsign(stopTime.stopHeadsign());
+//            newStopTime.setContinuousPickup(stopTime.continuousPickup());
+//            newStopTime.setContinuousDropOff(stopTime.continuousDropOff());
+//            newStopTime.setShapeDistTraveled(stopTime.shapeDistTraveled());
+//            newStopTime.setTimepoint(stopTime.timepoint());
+//            ioStopTime.add(newStopTime);
+//        });
         try
         {
             stopTimeRepository.saveAllAndFlush(ioStopTime);
@@ -275,7 +279,6 @@ public class PostgresService
             log.atSevere().withCause(e).log();
         }
     }
-
 
     /**
      * Add Calendar fields to database
@@ -316,7 +319,6 @@ public class PostgresService
         }
     }
 
-
     /**
      * Add CalendarDates fields to database
      * (Inserts records in "calendar_dates" table)
@@ -349,7 +351,6 @@ public class PostgresService
             log.atSevere().withCause(e).log();
         }
     }
-
 
     /**
      * Add Shapes fields to database
@@ -384,38 +385,65 @@ public class PostgresService
     }
 
 
-    /**
-     * Add FeedInfo fields to database
-     * (Inserts records in "feed_info" table)
-     */
-    @LogExecutionTime
-    public void addFeedInfoToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
-    {
-        GtfsTableContainer feedInfoContainer = feedContainer.getTableForFilename("feed_info.txt").orElseThrow(() -> new Exception("feed_info.txt not found"));
-        List<GtfsFeedInfo> entities = feedInfoContainer.getEntities();
-        List<FeedInfo> ioFeedInfo = new ArrayList<>();
-        log.atInfo().log(String.format("Persisting FeedInfo : %d entries", entities.size()));
-        entities.forEach(feedInfo -> {
-            FeedInfo newFeedInfo = new FeedInfo();
-            newFeedInfo.setFeedId(feedId);
-            newFeedInfo.setCsvRowNumber(feedInfo.csvRowNumber());
-            newFeedInfo.setFeedPublisherName(feedInfo.feedPublisherName());
-            newFeedInfo.setFeedPublisherUrl(feedInfo.feedPublisherUrl());
-            newFeedInfo.setFeedLang(feedInfo.feedLang());
-            newFeedInfo.setFeedStartDate(feedInfo.feedStartDate().toYYYYMMDD());
-            newFeedInfo.setFeedEndDate(feedInfo.feedEndDate().toYYYYMMDD());
-            newFeedInfo.setFeedVersion(feedInfo.feedVersion());
-            newFeedInfo.setFeedDesc(feedInfo.feedDesc());
-            newFeedInfo.setFeedRemarks(feedInfo.feedRemarks());
-            ioFeedInfo.add(newFeedInfo);
-        });
-        try
+
+
+
+        /**
+         * Add FeedInfo fields to database
+         * (Inserts records in "feed_info" table)
+         */
+        @LogExecutionTime
+        public void addFeedInfoToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
         {
-            feedInfoRepository.saveAllAndFlush(ioFeedInfo);
+            var tableName = "feed_info.txt";
+            GtfsTableContainer container = feedContainer.getTableForFilename(tableName)
+                    .orElseThrow(() -> new Exception(String.format("%s not found", tableName)));
+            var out = FeedInfoMapper.map(tableName, container, feedId);
+
+//
+//
+//
+//            GtfsTableContainer feedInfoContainer = feedContainer.getTableForFilename("feed_info.txt").orElseThrow(() -> new Exception("feed_info.txt not found"));
+//            List<GtfsFeedInfo> entities = feedInfoContainer.getEntities();
+//            List<FeedInfo> ioFeedInfo = new ArrayList<>();
+//            log.atInfo().log(String.format("Persisting FeedInfo : %d entries", entities.size()));
+//            entities.forEach(feedInfo -> {
+//                FeedInfo newFeedInfo = new FeedInfo();
+//                newFeedInfo.setFeedId(feedId);
+//                newFeedInfo.setCsvRowNumber(feedInfo.csvRowNumber());
+//                newFeedInfo.setFeedPublisherName(feedInfo.feedPublisherName());
+//                newFeedInfo.setFeedPublisherUrl(feedInfo.feedPublisherUrl());
+//                newFeedInfo.setFeedLang(feedInfo.feedLang());
+//                newFeedInfo.setFeedStartDate(feedInfo.feedStartDate().toYYYYMMDD());
+//                newFeedInfo.setFeedEndDate(feedInfo.feedEndDate().toYYYYMMDD());
+//                newFeedInfo.setFeedVersion(feedInfo.feedVersion());
+//                newFeedInfo.setFeedDesc(feedInfo.feedDesc());
+//                newFeedInfo.setFeedRemarks(feedInfo.feedRemarks());
+//                ioFeedInfo.add(newFeedInfo);
+//            });
+
+            try
+            {
+                feedInfoRepository.saveAllAndFlush(out);
+            }
+            catch (Exception e)
+            {
+                log.atSevere().withCause(e).log();
+            }
         }
-        catch (Exception e)
-        {
-            log.atSevere().withCause(e).log();
-        }
+
+
+//        @Mapper
+//        public interface StopTimesMapper
+//        {
+//
+//            StopTimesMapper INSTANCE = Mappers.getMapper(StopTimesMapper.class);
+//
+//            @Mapping(target = "arrivalTime", ignore = true)
+//            @Mapping(target = "departureTime", ignore = true)
+//            @Mapping(target = "stopId", source = "stopId")
+//            StopTime map(GtfsStopTime in);
+//
+//        }
     }
-}
+
