@@ -45,10 +45,8 @@ public class PostgresService
 
 
     /**
-     *
      * Generate frequencies for a plan
      * (Inserts records in "frequencies" table)
-     *
      */
     @LogExecutionTime(started = "Generating frequencies")
     public void generateFrequencies(String feedId)
@@ -67,10 +65,8 @@ public class PostgresService
 
 
     /**
-     *
      * Add Agency fields to database
      * (Inserts records in "agency" table)
-     *
      */
     @LogExecutionTime
     public void addAgencyToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
@@ -102,10 +98,8 @@ public class PostgresService
 
 
     /**
-     *
      * Add Stops fields to database
      * (Inserts records in "stops" table)
-     *
      */
     @LogExecutionTime
     public void addStopsToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
@@ -162,10 +156,8 @@ public class PostgresService
 
 
     /**
-     *
      * Add Routes fields to database
      * (Inserts records in "routes" table)
-     *
      */
     @LogExecutionTime
     public void addRoutesToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
@@ -209,12 +201,9 @@ public class PostgresService
     }
 
 
-
     /**
-     *
      * Add Trip fields to database
      * (Inserts records in "stops" table)
-     *
      */
     @LogExecutionTime
     public void addTripsToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
@@ -251,10 +240,8 @@ public class PostgresService
 
 
     /**
-     *
      * Add StopTimes fields to database
      * (Inserts records in "stop_times" table)
-     *
      */
     @LogExecutionTime
     public void addStopTimesToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
@@ -291,10 +278,8 @@ public class PostgresService
 
 
     /**
-     *
      * Add Calendar fields to database
      * (Inserts records in "calendar" table)
-     *
      */
     @LogExecutionTime
     public void addCalendarToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
@@ -333,10 +318,8 @@ public class PostgresService
 
 
     /**
-     *
      * Add CalendarDates fields to database
      * (Inserts records in "calendar_dates" table)
-     *
      */
     @LogExecutionTime
     public void addCalendarDatesToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
@@ -368,12 +351,9 @@ public class PostgresService
     }
 
 
-
     /**
-     *
      * Add Shapes fields to database
      * (Inserts records in "shapes" table)
-     *
      */
     @LogExecutionTime
     public void addShapesToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
@@ -405,10 +385,8 @@ public class PostgresService
 
 
     /**
-     *
      * Add FeedInfo fields to database
      * (Inserts records in "feed_info" table)
-     *
      */
     @LogExecutionTime
     public void addFeedInfoToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception

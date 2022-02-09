@@ -1,4 +1,4 @@
-package pt.tml.plannedoffer.controllers;
+package pt.tml.plannedoffer.models;
 
 import lombok.Data;
 
@@ -12,6 +12,7 @@ public class CsvExportResult
     private List<String> exportedFiles;
     private long exportedRows;
     private String generatedZipName;
+
     public CsvExportResult()
     {
         this.exportedFiles = new ArrayList<>();

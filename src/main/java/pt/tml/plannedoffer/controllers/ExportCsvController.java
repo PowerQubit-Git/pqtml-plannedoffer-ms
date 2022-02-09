@@ -14,6 +14,7 @@ import pt.tml.plannedoffer.aspects.LogExecutionTime;
 import pt.tml.plannedoffer.export.services.JpaCsvExportService;
 import pt.tml.plannedoffer.export.services.PgCopyCsvExportService;
 import pt.tml.plannedoffer.global.ApplicationState;
+import pt.tml.plannedoffer.models.CsvExportResult;
 import pt.tml.plannedoffer.models.ResponseMessage;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +42,6 @@ public class ExportCsvController
 
     /**
      * Export all Entities with @CsvFileName and @CsvBindByNameOrder annotations
-     *
      */
     @GetMapping("csv-generate/{feedId}")
     @LogExecutionTime

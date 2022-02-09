@@ -30,8 +30,8 @@ import pt.powerqubit.validator.core.notice.SeverityLevel;
 import pt.powerqubit.validator.core.notice.ValidationNotice;
 import pt.powerqubit.validator.core.table.*;
 import pt.powerqubit.validator.core.type.GtfsTime;
-import pt.powerqubit.validator.core.validator.util.S2Earth;
 import pt.powerqubit.validator.core.validator.FileValidator;
+import pt.powerqubit.validator.core.validator.util.S2Earth;
 
 import javax.inject.Inject;
 import java.util.List;

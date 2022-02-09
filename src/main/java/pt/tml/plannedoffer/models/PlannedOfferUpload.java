@@ -7,16 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-
 @Data
 @EqualsAndHashCode(callSuper = false)
-
-
-//TODO
-
 @Document(collection = "PlannedOfferUploads")
-
-
 public class PlannedOfferUpload extends PlannedOfferInfo
 {
 
@@ -29,7 +22,10 @@ public class PlannedOfferUpload extends PlannedOfferInfo
     {
         var res = new PlannedOfferInfo();
         res.setId(getId());
+        res.setValidated(isValidated());
+        res.setValidationDate(getValidationDate());
         res.setPublisherName(getPublisherName());
+        res.setValidatorName(getValidatorName());
         res.setOriginIp(getOriginIp());
         res.setUploadDate(getUploadDate());
         res.setLoadTime(getLoadTime());

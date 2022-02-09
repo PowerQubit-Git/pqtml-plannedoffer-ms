@@ -18,12 +18,13 @@ import java.util.Map;
 @RestController
 @CrossOrigin("*")
 @Flogger
+@RequestMapping("stops")
 public class StopsController
 {
     @Autowired
     StopRepository stopRepository;
 
-    @GetMapping("stops/{id}")
+    @GetMapping("{id}")
     HttpEntity<List<Stop>> get(@PathVariable String id) throws Exception
     {
         try
@@ -37,7 +38,7 @@ public class StopsController
         }
     }
 
-    @GetMapping("stops/{feedId}/{csvRowNumber}")
+    @GetMapping("{feedId}/{csvRowNumber}")
     HttpEntity<Stop> getOne(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         try
@@ -52,7 +53,7 @@ public class StopsController
         }
     }
 
-    @GetMapping("stop-by-stopid/{feedId}/{stopId}")
+    @GetMapping("by-stopid/{feedId}/{stopId}")
     HttpEntity<List<Stop>> getByStopId(@PathVariable(value = "feedId") String feedId, @PathVariable(value = "stopId") String stopId) throws Exception
     {
         try
@@ -66,13 +67,13 @@ public class StopsController
         }
     }
 
-    @PostMapping("stops")
+    @PostMapping()
     public Stop create(@Valid @RequestBody Stop employee)
     {
         return stopRepository.save(employee);
     }
 
-    @PutMapping("stops")
+    @PutMapping()
     public ResponseEntity<Stop> update(@Valid @RequestBody Stop details) throws Exception
     {
         try
@@ -87,7 +88,7 @@ public class StopsController
         }
     }
 
-    @DeleteMapping("stops/{feedId}/{csvRowNumber}")
+    @DeleteMapping("{feedId}/{csvRowNumber}")
     public Map<String, Boolean> delete(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber)
             throws Exception
     {

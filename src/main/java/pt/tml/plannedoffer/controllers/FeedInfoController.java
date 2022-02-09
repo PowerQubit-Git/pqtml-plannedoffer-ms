@@ -16,12 +16,13 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping("feed-info")
 public class FeedInfoController
 {
     @Autowired
     FeedInfoRepository feedInfoRepository;
 
-    @GetMapping("feed_info/{id}")
+    @GetMapping("{id}")
     HttpEntity<List<FeedInfo>> get(@PathVariable String id) throws Exception
     {
         try
@@ -35,8 +36,8 @@ public class FeedInfoController
         }
     }
 
-    @GetMapping("feed_info/{feedId}/{csvRowNumber}")
-    HttpEntity<FeedInfo> getOne(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
+    @GetMapping("{id}/{csvRowNumber}")
+    HttpEntity<FeedInfo> getOne(@PathVariable(value = "id") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         try
         {
@@ -49,13 +50,13 @@ public class FeedInfoController
         }
     }
 
-    @PostMapping("feed_info")
+    @PostMapping()
     public FeedInfo create(@Valid @RequestBody FeedInfo FeedInfo)
     {
         return feedInfoRepository.save(FeedInfo);
     }
 
-    @PutMapping("feed_info/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<FeedInfo> update(@PathVariable(value = "id") String id, @Valid @RequestBody FeedInfo details) throws Exception
     {
         try
@@ -69,8 +70,8 @@ public class FeedInfoController
         }
     }
 
-    @DeleteMapping("feed_info/{id}")
-    public Map<String, Boolean> delete(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
+    @DeleteMapping("{id}/{csvRowNumber}")
+    public Map<String, Boolean> delete(@PathVariable(value = "id") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         FeedInfo FeedInfo = feedInfoRepository.findById(new CsvRowFeedIdCompositeKey(csvRowNumber, feedId)).orElseThrow(() -> new Exception("not found"));
 

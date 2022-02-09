@@ -1,206 +1,359 @@
-CREATE TABLE agency
-(
-    feed_id         VARCHAR(255) NOT NULL,
-    agency_id       VARCHAR(255),
-    agency_name     VARCHAR(255),
-    agency_url      VARCHAR(255),
-    agency_timezone VARCHAR(255),
-    agency_lang     VARCHAR(255),
-    csv_row_number  BIGINT       NOT NULL,
-    primary key (csv_row_number, feed_id)
-);
 
-CREATE TABLE calendar
+create table if not exists ms_planned_offer.agency
 (
-    feed_id        VARCHAR(255) NOT NULL,
-    service_id     VARCHAR(255),
-    calendar_name  VARCHAR(255),
-    period VARCHAR (255),
-    monday         INTEGER,
-    tuesday        INTEGER,
-    wednesday      INTEGER,
-    thursday       INTEGER,
-    friday         INTEGER,
-    saturday       INTEGER,
-    sunday         INTEGER,
+    feed_id         varchar(255) not null,
+    agency_id       varchar(255),
+    agency_name     varchar(255),
+    agency_url      varchar(255),
+    agency_timezone varchar(255),
+    agency_lang     varchar(255),
+    csv_row_number  bigint       not null,
+    primary key (csv_row_number, feed_id)
+    );
+
+alter table ms_planned_offer.agency
+    owner to postgres;
+
+create table if not exists ms_planned_offer.calendar
+(
+    feed_id        varchar(255) not null,
+    service_id     varchar(255),
+    calendar_name  varchar(255),
+    period         varchar(255),
+    monday         integer,
+    tuesday        integer,
+    wednesday      integer,
+    thursday       integer,
+    friday         integer,
+    saturday       integer,
+    sunday         integer,
     start_date     date,
     end_date       date,
-    csv_row_number BIGINT       NOT NULL,
+    csv_row_number bigint       not null,
     primary key (csv_row_number, feed_id)
-);
+    );
 
-CREATE TABLE calendar_dates
+alter table ms_planned_offer.calendar
+    owner to postgres;
+
+create table if not exists ms_planned_offer.calendar_dates
 (
-    feed_id        VARCHAR(255) NOT NULL,
-    service_id     VARCHAR(255),
-    calendar_name  VARCHAR(255),
-    holiday        INTEGER,
-    period INTEGER,
+    feed_id        varchar(255) not null,
+    service_id     varchar(255),
+    calendar_name  varchar(255),
+    holiday        integer,
+    period         integer,
     date           date,
-    csv_row_number BIGINT       NOT NULL,
-    exception_type INTEGER,
+    csv_row_number bigint       not null,
+    exception_type integer,
     primary key (csv_row_number, feed_id)
-);
+    );
 
-CREATE TABLE feed_info
+alter table ms_planned_offer.calendar_dates
+    owner to postgres;
+
+create table if not exists ms_planned_offer.feed_info
 (
-    feed_id             VARCHAR(255) NOT NULL,
-    feed_info_id        BIGINT,
-    feed_publisher_name VARCHAR(255),
-    feed_publisher_url  VARCHAR(255),
-    feed_lang           VARCHAR(255),
-    feed_start_date     VARCHAR(255),
-    feed_end_date       VARCHAR(255),
-    feed_version        VARCHAR(255),
-    feed_desc           VARCHAR(255),
-    feed_remarks        VARCHAR(255),
-    csv_row_number      BIGINT       NOT NULL,
+    feed_id             varchar(255) not null,
+    feed_info_id        bigint,
+    feed_publisher_name varchar(255),
+    feed_publisher_url  varchar(255),
+    feed_lang           varchar(255),
+    feed_start_date     varchar(255),
+    feed_end_date       varchar(255),
+    feed_version        varchar(255),
+    feed_desc           varchar(255),
+    feed_remarks        varchar(255),
+    csv_row_number      bigint       not null,
+    feed_contact_email  varchar(255),
+    feed_contact_url    varchar(255),
     primary key (csv_row_number, feed_id)
-);
+    );
 
-CREATE TABLE frequencies
+alter table ms_planned_offer.feed_info
+    owner to postgres;
+
+create table if not exists ms_planned_offer.frequencies
 (
-    feed_id            VARCHAR(255) NOT NULL,
-    trip_id            VARCHAR(255),
-    start_time         TIME WITHOUT TIME ZONE,
-    end_time           TIME WITHOUT TIME ZONE,
-    frequency          INTEGER,
-    typology           INTEGER,
-    propulsion         INTEGER,
-    passenger_counting INTEGER,
-    video_surveillance INTEGER,
-    csv_row_number     BIGINT       NOT NULL,
+    feed_id            varchar(255) not null,
+    trip_id            varchar(255),
+    start_time         time,
+    end_time           time,
+    frequency          integer,
+    typology           integer,
+    propulsion         integer,
+    passenger_counting integer,
+    video_surveillance integer,
+    csv_row_number     bigint       not null,
+    exact_times        integer,
+    headway_secs       integer,
     primary key (csv_row_number, feed_id)
-);
+    );
 
-CREATE TABLE routes
+alter table ms_planned_offer.frequencies
+    owner to postgres;
+
+create table if not exists ms_planned_offer.routes
 (
-    feed_id             VARCHAR(255) NOT NULL,
-    line_id             VARCHAR(255),
-    line_short_name     VARCHAR(255),
-    line_long_name      VARCHAR(255),
-    route_id            VARCHAR(255),
-    agency_id           VARCHAR(255),
-    route_origin        VARCHAR(255),
-    route_destination   VARCHAR(255),
-    route_short_name    VARCHAR(255),
-    route_long_name     VARCHAR(255),
-    route_desc          VARCHAR(255),
-    route_remarks       VARCHAR(255),
-    route_type          INTEGER,
-    contract            VARCHAR(255),
-    path_type           INTEGER,
-    circular            INTEGER,
-    school              INTEGER,
-    continuous_pickup   INTEGER,
-    continuous_drop_off INTEGER,
-    csv_row_number      BIGINT       NOT NULL,
+    feed_id             varchar(255) not null,
+    line_id             varchar(255),
+    line_short_name     varchar(255),
+    line_long_name      varchar(255),
+    route_id            varchar(255),
+    agency_id           varchar(255),
+    route_origin        varchar(255),
+    route_destination   varchar(255),
+    route_short_name    varchar(255),
+    route_long_name     varchar(255),
+    route_desc          varchar(255),
+    route_remarks       varchar(255),
+    route_type          integer,
+    contract            varchar(255),
+    path_type           integer,
+    circular            integer,
+    school              integer,
+    continuous_pickup   integer,
+    continuous_drop_off integer,
+    csv_row_number      bigint       not null,
+    route_sort_order    integer,
+    route_url           varchar(255),
     primary key (csv_row_number, feed_id)
-);
+    );
 
-CREATE TABLE shapes
+alter table ms_planned_offer.routes
+    owner to postgres;
+
+create table if not exists ms_planned_offer.shapes
 (
-    feed_id             VARCHAR(255) NOT NULL,
-    line_id             VARCHAR(255),
-    shape_pt_lat        DOUBLE PRECISION,
-    shape_pt_lon        DOUBLE PRECISION,
-    shape_pt_sequence   INTEGER,
-    shape_dist_traveled DOUBLE PRECISION,
-    csv_row_number      BIGINT       NOT NULL,
+    feed_id             varchar(255) not null,
+    line_id             varchar(255),
+    shape_pt_lat        double precision,
+    shape_pt_lon        double precision,
+    shape_pt_sequence   integer,
+    shape_dist_traveled double precision,
+    csv_row_number      bigint       not null,
     primary key (csv_row_number, feed_id)
-);
+    );
 
-CREATE TABLE sp_rows_by_table
-(
-    gtfs_table VARCHAR(255) NOT NULL,
-    counter    INTEGER,
-    CONSTRAINT pk_sprowsbytable PRIMARY KEY (gtfs_table)
-);
+alter table ms_planned_offer.shapes
+    owner to postgres;
 
-CREATE TABLE sp_trips_by_line
+create table if not exists ms_planned_offer.sp_rows_by_table
 (
-    line_id VARCHAR(255) NOT NULL,
-    total   INTEGER,
-    CONSTRAINT pk_sptripsbyline PRIMARY KEY (line_id)
-);
+    gtfs_table varchar(255) not null
+    constraint pk_sprowsbytable
+    primary key,
+    counter    integer
+    );
 
-CREATE TABLE stop_times
+alter table ms_planned_offer.sp_rows_by_table
+    owner to postgres;
+
+create table if not exists ms_planned_offer.sp_trips_by_line
 (
-    feed_id             VARCHAR(255) NOT NULL,
-    trip_id             VARCHAR(255),
-    arrival_time        VARCHAR(255),
-    departure_time      VARCHAR(255),
-    stop_id             VARCHAR(255),
-    stop_sequence       INTEGER,
-    stop_headsign       VARCHAR(255),
-    continuous_pickup   INTEGER,
-    continuous_drop_off INTEGER,
-    shape_dist_traveled DOUBLE PRECISION,
-    pickup_type        INTEGER,
-    drop_off_type       INTEGER,
-    timepoint           INTEGER,
-    csv_row_number      BIGINT       NOT NULL,
+    line_id varchar(255) not null
+    constraint pk_sptripsbyline
+    primary key,
+    total   integer
+    );
+
+alter table ms_planned_offer.sp_trips_by_line
+    owner to postgres;
+
+create table if not exists ms_planned_offer.stop_times
+(
+    feed_id             varchar(255) not null,
+    trip_id             varchar(255),
+    arrival_time        varchar(255),
+    departure_time      varchar(255),
+    stop_id             varchar(255),
+    stop_sequence       integer,
+    stop_headsign       varchar(255),
+    continuous_pickup   integer,
+    continuous_drop_off integer,
+    shape_dist_traveled double precision,
+    pickup_type         integer,
+    drop_off_type       integer,
+    timepoint           integer,
+    csv_row_number      bigint       not null,
     primary key (csv_row_number, feed_id)
-);
+    );
 
-CREATE TABLE stops
+alter table ms_planned_offer.stop_times
+    owner to postgres;
+
+create table if not exists ms_planned_offer.stops
 (
-    feed_id               VARCHAR(255) NOT NULL,
-    stop_id               VARCHAR(255),
-    stop_id_stepp         VARCHAR(255),
-    stop_code             VARCHAR(255),
-    stop_name             VARCHAR(255),
-    stop_desc             VARCHAR(255),
-    stop_remarks          VARCHAR(255),
-    stop_lat              DOUBLE PRECISION,
-    stop_lon              DOUBLE PRECISION,
-    zone_shift            INTEGER,
-    location_type         INTEGER,
-    parent_station        VARCHAR(255),
-    wheelchair_boarding   INTEGER,
-    platform_code         VARCHAR(255),
-    entrance_restriction  INTEGER,
-    exit_restriction      INTEGER,
-    slot                  INTEGER,
-    signalling            INTEGER,
-    shelter               INTEGER,
-    bench                 INTEGER,
-    network_map           INTEGER,
-    schedule              INTEGER,
-    real_time_information INTEGER,
-    tariff                INTEGER,
-    preservation_state    INTEGER,
-    equipment             VARCHAR(255),
-    observations          VARCHAR(255),
-    region                VARCHAR(255),
-    municipality          INTEGER,
-    municipality_fare1    INTEGER,
-    municipality_fare2    INTEGER,
-    csv_row_number        BIGINT       NOT NULL,
+    feed_id               varchar(255) not null,
+    stop_id               varchar(255),
+    stop_id_stepp         varchar(255),
+    stop_code             varchar(255),
+    stop_name             varchar(255),
+    stop_desc             varchar(255),
+    stop_remarks          varchar(255),
+    stop_lat              double precision,
+    stop_lon              double precision,
+    zone_shift            integer,
+    location_type         integer,
+    parent_station        varchar(255),
+    wheelchair_boarding   integer,
+    platform_code         varchar(255),
+    entrance_restriction  integer,
+    exit_restriction      integer,
+    slot                  integer,
+    signalling            integer,
+    shelter               integer,
+    bench                 integer,
+    network_map           integer,
+    schedule              integer,
+    real_time_information integer,
+    tariff                integer,
+    preservation_state    integer,
+    equipment             varchar(255),
+    observations          varchar(255),
+    region                varchar(255),
+    municipality          integer,
+    municipality_fare1    integer,
+    municipality_fare2    integer,
+    csv_row_number        bigint       not null,
     primary key (csv_row_number, feed_id)
-);
+    );
 
-CREATE TABLE trips
+alter table ms_planned_offer.stops
+    owner to postgres;
+
+create table if not exists ms_planned_offer.trips
 (
-    feed_id               VARCHAR(255) NOT NULL,
-    route_id              VARCHAR(255),
-    service_id            VARCHAR(255),
-    trip_id               VARCHAR(255),
-    trip_first            TIME WITHOUT TIME ZONE,
-    trip_last             TIME WITHOUT TIME ZONE,
-    trip_headsign         VARCHAR(255),
-    direction_id          INTEGER,
-    shape_id              VARCHAR(255),
-    wheelchair_accessible INTEGER,
-    bikes_allowed         INTEGER,
-    csv_row_number        BIGINT       NOT NULL,
+    feed_id               varchar(255) not null,
+    route_id              varchar(255),
+    service_id            varchar(255),
+    trip_id               varchar(255),
+    trip_first            time,
+    trip_last             time,
+    trip_headsign         varchar(255),
+    direction_id          integer,
+    shape_id              varchar(255),
+    wheelchair_accessible integer,
+    bikes_allowed         integer,
+    csv_row_number        bigint       not null,
+    block_id              varchar(255),
+    trip_short_name       varchar(255),
     primary key (csv_row_number, feed_id)
+    );
+
+alter table ms_planned_offer.trips
+    owner to postgres;
+
+create table if not exists ms_planned_offer.frequency_periods
+(
+    frequency_period_id bigint not null
+    primary key,
+    start_time          time,
+    end_time            time
 );
 
-CREATE TABLE frequency_periods
+alter table ms_planned_offer.frequency_periods
+    owner to postgres;
+
+create table if not exists ms_planned_offer.attribution
 (
-    frequency_period_id BIGINT NOT NULL,
-    start_time          TIME WITHOUT TIME ZONE,
-    end_time            TIME WITHOUT TIME ZONE,
-    primary key (frequency_period_id)
-);
+    csv_row_number    bigint       not null,
+    feed_id           varchar(255) not null,
+    agency_id         varchar(255),
+    attribution_email varchar(255),
+    attribution_id    varchar(255),
+    attribution_phone varchar(255),
+    attribution_url   varchar(255),
+    is_authority      integer,
+    is_operator       integer,
+    is_producer       integer,
+    organization_name varchar(255),
+    route_id          varchar(255),
+    trip_id           varchar(255),
+    primary key (csv_row_number, feed_id)
+    );
+
+alter table ms_planned_offer.attribution
+    owner to postgres;
+
+create table if not exists ms_planned_offer.fare_attributes
+(
+    csv_row_number    bigint       not null,
+    feed_id           varchar(255) not null,
+    agency_id         varchar(255),
+    currency_type     varchar(255),
+    fare_id           varchar(255),
+    payment_method    integer,
+    price             numeric(19, 2),
+    transfer_duration integer,
+    transfers         integer,
+    primary key (csv_row_number, feed_id)
+    );
+
+alter table ms_planned_offer.fare_attributes
+    owner to postgres;
+
+create table if not exists ms_planned_offer.fare_rules
+(
+    csv_row_number bigint       not null,
+    feed_id        varchar(255) not null,
+    contains_id    varchar(255),
+    destination_id varchar(255),
+    fare_id        varchar(255),
+    origin_id      varchar(255),
+    route_id       varchar(255),
+    primary key (csv_row_number, feed_id)
+    );
+
+alter table ms_planned_offer.fare_rules
+    owner to postgres;
+
+create table if not exists ms_planned_offer.level
+(
+    csv_row_number bigint       not null,
+    feed_id        varchar(255) not null,
+    level_id       varchar(255),
+    level_index    double precision,
+    level_name     varchar(255),
+    primary key (csv_row_number, feed_id)
+    );
+
+alter table ms_planned_offer.level
+    owner to postgres;
+
+create table if not exists ms_planned_offer.pathway
+(
+    csv_row_number         bigint       not null,
+    feed_id                varchar(255) not null,
+    from_stop_id           varchar(255),
+    is_bidirectional       integer,
+    length                 double precision,
+    max_slope              double precision,
+    min_width              double precision,
+    pathway_id             varchar(255),
+    pathway_mode           integer,
+    reversed_signposted_as varchar(255),
+    signposted_as          varchar(255),
+    stair_count            integer,
+    to_stop_id             varchar(255),
+    traversal_time         integer,
+    primary key (csv_row_number, feed_id)
+    );
+
+alter table ms_planned_offer.pathway
+    owner to postgres;
+
+create table if not exists ms_planned_offer.transfers
+(
+    csv_row_number    bigint       not null,
+    feed_id           varchar(255) not null,
+    from_stop_id      varchar(255),
+    min_transfer_time varchar(255),
+    to_stop_id        varchar(255),
+    transfer_type     varchar(255),
+    primary key (csv_row_number, feed_id)
+    );
+
+alter table ms_planned_offer.transfers
+    owner to postgres;
+

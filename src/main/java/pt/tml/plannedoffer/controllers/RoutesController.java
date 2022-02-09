@@ -16,12 +16,13 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping("routes")
 public class RoutesController
 {
     @Autowired
     RouteRepository routeRepository;
 
-    @GetMapping("routes/{id}")
+    @GetMapping("{id}")
     HttpEntity<List<Route>> get(@PathVariable String id) throws Exception
     {
         try
@@ -35,7 +36,8 @@ public class RoutesController
         }
     }
 
-    @GetMapping("routes/{feedId}/{csvRowNumber}")
+
+    @GetMapping("{feedId}/{csvRowNumber}")
     HttpEntity<Route> getOne(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         try
@@ -50,7 +52,8 @@ public class RoutesController
         }
     }
 
-    @GetMapping("routes-by-agency/{feedId}/{agencyId}")
+
+    @GetMapping("by-agency/{feedId}/{agencyId}")
     HttpEntity<List<Route>> getByAgency(@PathVariable(value = "feedId") String feedId, @PathVariable(value = "agencyId") String agencyId) throws Exception
     {
         try
@@ -64,13 +67,13 @@ public class RoutesController
         }
     }
 
-    @PostMapping("routes")
+    @PostMapping()
     public Route create(@Valid @RequestBody Route route)
     {
         return routeRepository.save(route);
     }
 
-    @PutMapping("routes/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Route> update(@PathVariable(value = "id") String id, @Valid @RequestBody Route details) throws Exception
     {
         try
@@ -84,7 +87,7 @@ public class RoutesController
         }
     }
 
-    @DeleteMapping("routes/{feedId}/{csvRowNumber}")
+    @DeleteMapping("{feedId}/{csvRowNumber}")
     public Map<String, Boolean> deleteEmployee(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         Route route = routeRepository.findById(new CsvRowFeedIdCompositeKey(csvRowNumber, feedId))

@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Setter
 @Table(name = "attribution")
 @CsvFileName("attribution.txt")
-@CsvBindByNameOrder({"AttributionId", "AgencyId", "RouteId", "TripId", "OrganizationName","IsProducer","IsOperator","IsAuthority","AttributionUrl","AttributionEmail","AttributionPhone",})
+@CsvBindByNameOrder({"AttributionId", "AgencyId", "RouteId", "TripId", "OrganizationName", "IsProducer", "IsOperator", "IsAuthority", "AttributionUrl", "AttributionEmail", "AttributionPhone",})
 @IdClass(CsvRowFeedIdCompositeKey.class)
 public class Attribution implements FeedIdEntity
 {

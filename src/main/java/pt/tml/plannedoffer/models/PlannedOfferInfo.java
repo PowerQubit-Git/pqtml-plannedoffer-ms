@@ -18,9 +18,13 @@ public class PlannedOfferInfo
     @Id
     private String id;
     private String publisherName;
+    private String validatorName;
     private String fileName;
 
     private Date uploadDate;
+    private Date validationDate;
+
+    private boolean validated;
 
     private long loadTime;
     private long fileSize;

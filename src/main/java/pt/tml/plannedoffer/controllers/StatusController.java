@@ -6,7 +6,6 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,15 +16,10 @@ import pt.powerqubit.validator.core.validator.FileValidator;
 import pt.powerqubit.validator.core.validator.SingleEntityValidator;
 import pt.tml.plannedoffer.export.writer.CsvPgCopyWriter;
 import pt.tml.plannedoffer.global.ApplicationState;
+import pt.tml.plannedoffer.models.ServiceStatus;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 
 @RestController
@@ -55,23 +49,18 @@ public class StatusController
         }
 
 
-
-
-
-
-
-      //  var loader = Thread.currentThread().getContextClassLoader();
+        //  var loader = Thread.currentThread().getContextClassLoader();
 
 
         var classPath = ClassPath.from(ClassLoader.getSystemClassLoader());
 
         var top = classPath.getTopLevelClassesRecursive("pt.powerqubit.validator.core.validator");
 
-        var ccp= System.getProperty("java.class.path");
+        var ccp = System.getProperty("java.class.path");
 
         var resolver = new PathMatchingResourcePatternResolver(this.getClass().getClassLoader());
 
-        var resources= resolver.getResources("pt/powerqubit/validator/core/validator/*.class");
+        var resources = resolver.getResources("pt/powerqubit/validator/core/validator/*.class");
 
 
 //

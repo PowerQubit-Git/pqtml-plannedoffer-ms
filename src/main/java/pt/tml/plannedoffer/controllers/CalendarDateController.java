@@ -16,12 +16,13 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping("calendarDates")
 public class CalendarDateController
 {
     @Autowired
     CalendarDateRepository calendarDateRepository;
 
-    @GetMapping("calendarDates/{id}")
+    @GetMapping("{id}")
     HttpEntity<List<CalendarDate>> get(@PathVariable String id) throws Exception
     {
         try
@@ -35,7 +36,7 @@ public class CalendarDateController
         }
     }
 
-    @GetMapping("calendarDates/{feedId}/{csvRowNumber}")
+    @GetMapping("{feedId}/{csvRowNumber}")
     HttpEntity<CalendarDate> getOne(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         try
@@ -50,7 +51,7 @@ public class CalendarDateController
         }
     }
 
-    @GetMapping("calendar-dates-by-service/{feedId}/{serviceId}")
+    @GetMapping("{feedId}/{serviceId}")
     HttpEntity<List<CalendarDate>> getByAgency(@PathVariable(value = "feedId") String feedId, @PathVariable(value = "serviceId") String serviceId) throws Exception
     {
         try
@@ -64,13 +65,13 @@ public class CalendarDateController
         }
     }
 
-    @PostMapping("calendarDates")
+    @PostMapping()
     public CalendarDate create(@Valid @RequestBody CalendarDate calendardate)
     {
         return calendarDateRepository.save(calendardate);
     }
 
-    @PutMapping("calendarDates/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<CalendarDate> update(@PathVariable(value = "id") String id, @Valid @RequestBody CalendarDate details) throws Exception
     {
         try
@@ -84,7 +85,7 @@ public class CalendarDateController
         }
     }
 
-    @DeleteMapping("calendarDates/{feedId}/{csvRowNumber}")
+    @DeleteMapping("{feedId}/{csvRowNumber}")
     public Map<String, Boolean> delete(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber)
             throws Exception
     {

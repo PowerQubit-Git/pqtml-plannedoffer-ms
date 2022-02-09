@@ -16,12 +16,13 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping("frequencies")
 public class FrequenciesController
 {
     @Autowired
     FrequencyRepository frequencyRepository;
 
-    @GetMapping("frequencies/{feedId}")
+    @GetMapping("{feedId}")
     HttpEntity<List<Frequency>> get(@PathVariable String feedId) throws Exception
     {
         try
@@ -35,7 +36,7 @@ public class FrequenciesController
         }
     }
 
-    @GetMapping("frequencies/{feedId}/{csvRowNumber}")
+    @GetMapping("{feedId}/{csvRowNumber}")
     HttpEntity<Frequency> getOne(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         try
@@ -50,7 +51,7 @@ public class FrequenciesController
         }
     }
 
-    @GetMapping("frequencies-by-trip/{feedId}/{tripId}")
+    @GetMapping("by-trip/{feedId}/{tripId}")
     HttpEntity<List<Frequency>> getByTrip(@PathVariable(value = "feedId") String feedId, @PathVariable(value = "tripId") String tripId) throws Exception
     {
         try
@@ -64,13 +65,13 @@ public class FrequenciesController
         }
     }
 
-    @PostMapping("frequencies")
+    @PostMapping()
     public Frequency create(@Valid @RequestBody Frequency frequency)
     {
         return frequencyRepository.save(frequency);
     }
 
-    @PutMapping("frequencies/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Frequency> update(@PathVariable(value = "id") String id,
                                             @Valid @RequestBody Frequency details) throws Exception
     {
@@ -85,7 +86,7 @@ public class FrequenciesController
         }
     }
 
-    @DeleteMapping("frequencies/{feedId}/{csvRowNumber}")
+    @DeleteMapping("{feedId}/{csvRowNumber}")
     public Map<String, Boolean> delete(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber)
             throws Exception
     {

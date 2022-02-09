@@ -1,6 +1,5 @@
 package pt.tml.plannedoffer.models;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

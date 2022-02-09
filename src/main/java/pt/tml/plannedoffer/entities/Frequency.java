@@ -6,7 +6,6 @@ import pt.powerqubit.validator.core.table.*;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
-import pt.tml.plannedoffer.gtfs.tables.*;
 
 import javax.persistence.*;
 import java.time.LocalTime;

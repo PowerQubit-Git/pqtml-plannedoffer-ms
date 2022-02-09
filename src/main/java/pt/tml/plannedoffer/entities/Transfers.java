@@ -16,7 +16,6 @@ import javax.persistence.*;
 
 @Data
 @IdClass(CsvRowFeedIdCompositeKey.class)
-@JsonAdapter(StopTimeSerializer.class)
 public class Transfers implements FeedIdEntity
 {
 

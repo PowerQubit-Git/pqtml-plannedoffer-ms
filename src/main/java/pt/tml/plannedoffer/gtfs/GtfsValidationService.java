@@ -24,8 +24,8 @@ import pt.powerqubit.validator.core.validator.ValidatorLoaderException;
 import pt.tml.plannedoffer.aspects.LogExecutionTime;
 import pt.tml.plannedoffer.database.MongoDbService;
 import pt.tml.plannedoffer.database.PostgresService;
-import pt.tml.plannedoffer.models.PlannedOfferUpload;
 import pt.tml.plannedoffer.models.Notices;
+import pt.tml.plannedoffer.models.PlannedOfferUpload;
 import pt.tml.plannedoffer.models.ReportSummary;
 
 import java.io.IOException;

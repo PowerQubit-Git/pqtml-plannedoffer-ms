@@ -25,20 +25,17 @@ public class StopToShapeMatcherSettings
     public static final double DEFAULT_MAX_DISTANCE_FROM_STOP_TO_SHAPE_IN_METERS = 100.0;
     public static final double DEFAULT_LARGE_STATION_DISTANCE_MULTIPLIER = 4.0;
     public static final int DEFAULT_POTENTIAL_MATCHES_FOR_STOP_PROBLEM_THRESHOLD = 20;
-
+    /**
+     * A large station (e.g. main train station) requires a bigger threshold, therefore the
+     * maxDistanceFromStopToShapeInMeters is multiplied by this multiplier.
+     */
+    private final double largeStationDistanceMultiplier = DEFAULT_LARGE_STATION_DISTANCE_MULTIPLIER;
     /**
      * A stop to shape matching will be considered invalid if the matched stop is more than the
      * specified distance from the shape.
      */
     private double maxDistanceFromStopToShapeInMeters =
             DEFAULT_MAX_DISTANCE_FROM_STOP_TO_SHAPE_IN_METERS;
-
-    /**
-     * A large station (e.g. main train station) requires a bigger threshold, therefore the
-     * maxDistanceFromStopToShapeInMeters is multiplied by this multiplier.
-     */
-    private final double largeStationDistanceMultiplier = DEFAULT_LARGE_STATION_DISTANCE_MULTIPLIER;
-
     /**
      * When computing potential matches for a stop, a problem will be generated if the number of
      * potential matches is greater than this threshold. Note that this doesn't necessarily mean a

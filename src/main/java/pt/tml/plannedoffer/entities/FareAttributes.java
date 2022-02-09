@@ -11,16 +11,14 @@ import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.ZoneId;
 import java.util.Currency;
-import java.util.Locale;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "fare_attributes")
 @CsvFileName("fare_attributes.txt")
-@CsvBindByNameOrder({"FareId", "Price", "CurrencyType", "PaymentMethod", "Transfers","AgencyId","TransferDuration",})
+@CsvBindByNameOrder({"FareId", "Price", "CurrencyType", "PaymentMethod", "Transfers", "AgencyId", "TransferDuration",})
 @IdClass(CsvRowFeedIdCompositeKey.class)
 public class FareAttributes implements FeedIdEntity
 {

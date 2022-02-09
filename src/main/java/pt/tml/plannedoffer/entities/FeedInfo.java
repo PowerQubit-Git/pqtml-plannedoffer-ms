@@ -14,7 +14,8 @@ import java.util.Locale;
 @IdClass(CsvRowFeedIdCompositeKey.class)
 @CsvBindByNameOrder({"FeedInfoId", "FeedPublisherName", "FeedPublisherUrl", "Feedlang", "FeedStartDate", "FeedEndDate", "FeedVersion", "FeedDesc", "FeedRemarks"})
 
-public class FeedInfo implements FeedIdEntity {
+public class FeedInfo implements FeedIdEntity
+{
 
     @Column(name = "FeedInfoId")
     private Long feedInfoId;

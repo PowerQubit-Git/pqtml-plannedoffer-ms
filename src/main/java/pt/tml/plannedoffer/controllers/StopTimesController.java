@@ -16,12 +16,13 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping("stop-times")
 public class StopTimesController
 {
     @Autowired
     StopTimeRepository stopTimeRepository;
 
-    @GetMapping("stop_times/{feedId}")
+    @GetMapping("{feedId}")
     HttpEntity<List<StopTime>> get(@PathVariable String feedId) throws Exception
     {
         try
@@ -35,7 +36,7 @@ public class StopTimesController
         }
     }
 
-    @GetMapping("stop_times/{feedId}/{csvRowNumber}")
+    @GetMapping("{feedId}/{csvRowNumber}")
     HttpEntity<StopTime> getOne(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         try
@@ -50,7 +51,7 @@ public class StopTimesController
         }
     }
 
-    @GetMapping("stop-times-by-tripid/{feedId}/{tripId}")
+    @GetMapping("by-tripid/{feedId}/{tripId}")
     HttpEntity<List<StopTime>> getByAgency(@PathVariable(value = "feedId") String feedId, @PathVariable(value = "tripId") String tripId) throws Exception
     {
         try
@@ -64,13 +65,13 @@ public class StopTimesController
         }
     }
 
-    @PostMapping("stop_times")
+    @PostMapping("")
     public StopTime create(@Valid @RequestBody StopTime stopTimes)
     {
         return stopTimeRepository.save(stopTimes);
     }
 
-    @PutMapping("stop_times/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<StopTime> update(@PathVariable(value = "id") String id,
                                            @Valid @RequestBody StopTime details) throws Exception
     {
@@ -85,7 +86,7 @@ public class StopTimesController
         }
     }
 
-    @DeleteMapping("stop_times/{feedId}/{csvRowNumber}")
+    @DeleteMapping("{feedId}/{csvRowNumber}")
     public Map<String, Boolean> delete(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber)
             throws Exception
     {

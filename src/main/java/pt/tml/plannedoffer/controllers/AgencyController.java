@@ -16,13 +16,14 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping("agency")
 public class AgencyController
 {
 
     @Autowired
     AgencyRepository agencyRepository;
 
-    @GetMapping("agency/{id}")
+    @GetMapping("{id}")
     HttpEntity<List<Agency>> get(@PathVariable String id) throws Exception
     {
         try
@@ -36,7 +37,7 @@ public class AgencyController
         }
     }
 
-    @GetMapping("agency/{feedId}/{csvRowNumber}")
+    @GetMapping("{feedId}/{csvRowNumber}")
     HttpEntity<Agency> getOne(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         try
@@ -51,13 +52,13 @@ public class AgencyController
         }
     }
 
-    @PostMapping("agency")
+    @PostMapping()
     public Agency create(@Valid @RequestBody Agency agency)
     {
         return agencyRepository.save(agency);
     }
 
-    @PutMapping("agency")
+    @PutMapping()
     public ResponseEntity<Agency> update(@Valid @RequestBody Agency details) throws Exception
     {
         try
@@ -71,7 +72,7 @@ public class AgencyController
         }
     }
 
-    @DeleteMapping("agency/{feedId}/{csvRowNumber}")
+    @DeleteMapping("{feedId}/{csvRowNumber}")
     public Map<String, Boolean> deleteAgency(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         Agency a = agencyRepository.findById(new CsvRowFeedIdCompositeKey(csvRowNumber, feedId))

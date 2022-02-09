@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pt.tml.plannedoffer.database.MongoDbService;
 import pt.tml.plannedoffer.global.ApplicationState;
+import pt.tml.plannedoffer.gtfs.GtfsValidationService;
+import pt.tml.plannedoffer.models.Notices;
 import pt.tml.plannedoffer.models.PlannedOfferInfo;
 import pt.tml.plannedoffer.models.PlannedOfferUpload;
-import pt.tml.plannedoffer.models.Notices;
 import pt.tml.plannedoffer.models.ReportSummary;
-import pt.tml.plannedoffer.gtfs.GtfsValidationService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -37,8 +37,7 @@ public class UploadController
                                                        @RequestParam("user") String publisher,
                                                        HttpServletRequest request)
     {
-
-//        var remoteIpAddress= request.getHeader("X-FORWARDED-FOR");
+//        var remoteIpAddress= request.getHeader("X-FORWARDED-FOR").or;
 //        var remoteIpAddress= request.getRemoteAddress());
 
         if (ApplicationState.uploadBusy || ApplicationState.validationBusy || ApplicationState.entityPersistenceBusy)
@@ -70,7 +69,7 @@ public class UploadController
             long endTime = System.currentTimeMillis();
             upload.setLoadTime(endTime - startTime);
 
-            // Save new feed to mongo
+            // Always save new feed to mongo
             var savedUpload = mongoService.savePlan(upload);
 
             ApplicationState.uploadBusy = false;

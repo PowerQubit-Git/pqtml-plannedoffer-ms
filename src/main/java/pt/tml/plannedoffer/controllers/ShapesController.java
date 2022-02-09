@@ -16,12 +16,13 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping("shapes")
 public class ShapesController
 {
     @Autowired
     ShapeRepository shapeRepository;
 
-    @GetMapping("shapes/{id}")
+    @GetMapping("{id}")
     HttpEntity<List<Shape>> get(@PathVariable String id) throws Exception
     {
         try
@@ -35,7 +36,7 @@ public class ShapesController
         }
     }
 
-    @GetMapping("shape-by-shapeid/{feedId}/{shapeId}")
+    @GetMapping("by-shapeid/{feedId}/{shapeId}")
     HttpEntity<List<Shape>> getByShapeId(@PathVariable(value = "feedId") String feedId, @PathVariable(value = "shapeId") String shapeId) throws Exception
     {
         try
@@ -49,7 +50,7 @@ public class ShapesController
         }
     }
 
-    @PostMapping("shapes")
+    @PostMapping("")
     public Shape create(@Valid @RequestBody Shape employee)
     {
         return shapeRepository.save(employee);
@@ -69,7 +70,7 @@ public class ShapesController
         }
     }
 
-    @DeleteMapping("shapes/{feedId}/{csvRowNumber}")
+    @DeleteMapping("{feedId}/{csvRowNumber}")
     public Map<String, Boolean> delete(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         Shape Shapes = shapeRepository.findById(new CsvRowFeedIdCompositeKey(csvRowNumber, feedId))

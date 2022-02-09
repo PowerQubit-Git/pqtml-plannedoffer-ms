@@ -1,10 +1,12 @@
-CREATE OR REPLACE PROCEDURE ms_planned_offer.generate_frequency_periods() AS
+CREATE
+OR REPLACE PROCEDURE ms_planned_offer.generate_frequency_periods() AS
 $$
 BEGIN
 
     DECLARE
 stime time := '00:00';
-        span  time := interval '30 minute';
+        span
+time := interval '30 minute';
 
 
 
@@ -22,7 +24,8 @@ end;
 
 END
 
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 --
 -- Generate table values

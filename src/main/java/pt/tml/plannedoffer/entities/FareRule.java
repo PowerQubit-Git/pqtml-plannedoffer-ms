@@ -8,8 +8,6 @@ import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Currency;
 
 @Entity
 @Getter
