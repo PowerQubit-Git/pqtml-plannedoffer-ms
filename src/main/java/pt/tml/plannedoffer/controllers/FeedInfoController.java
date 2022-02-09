@@ -41,7 +41,8 @@ public class FeedInfoController
     {
         try
         {
-            FeedInfo list = feedInfoRepository.findById(new CsvRowFeedIdCompositeKey(csvRowNumber, feedId)).orElseThrow(() -> new Exception("not found"));
+            FeedInfo list = feedInfoRepository.findById(new CsvRowFeedIdCompositeKey(csvRowNumber, feedId))
+                    .orElseThrow(() -> new Exception("not found"));
             return new ResponseEntity<>(list, HttpStatus.OK);
         }
         catch (Exception e)

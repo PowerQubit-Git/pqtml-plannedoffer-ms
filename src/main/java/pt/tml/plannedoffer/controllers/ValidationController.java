@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import pt.powerqubit.validator.core.table.GtfsFeedContainer;
 import pt.tml.plannedoffer.aspects.LogExecutionTime;
 import pt.tml.plannedoffer.database.MongoDbService;
@@ -27,6 +28,17 @@ import java.util.Objects;
 @RequestMapping("plan")
 public class ValidationController
 {
+    public static final String VALIDATION_COMPLETED = "Validation Completed";
+    public static final String VALIDATION_FAILED = "Validation Failed";
+    public static final String SERVICE_BUSY = "Service Busy";
+    public static final String GIVEN_FEED_ID_IS_NULL = "given feed id is null";
+    public static final String ERROR_VALIDATING_FEED = "error validating feed";
+    public static final String ERROR = "ERROR";
+    public static final String WARNING = "WARNING";
+    public static final String INFO = "INFO";
+    public static final String FAILED_ENTITY_PERSISTENCE = "Failed persisting some or all entities to database";
+    public static final String VALIDATION_REQUEST_REFUSED_IN_BUSY_STATE = "Validation request refused in busy state ";
+
     @Autowired
     MongoDbService mongoService;
     @Autowired
@@ -50,10 +62,14 @@ public class ValidationController
 
         if (ApplicationState.uploadBusy || ApplicationState.validationBusy || ApplicationState.entityPersistenceBusy)
         {
-            log.atWarning().log(String.format("Validation request refused in busy state u:%s v:%s p:%s", ApplicationState.uploadBusy, ApplicationState.validationBusy, ApplicationState.entityPersistenceBusy));
-            var response = new ValidationResult();
-            response.setMessage("Service Busy");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            log.atWarning().log(String.format(VALIDATION_REQUEST_REFUSED_IN_BUSY_STATE + "u:%s v:%s p:%s", ApplicationState.uploadBusy, ApplicationState.validationBusy, ApplicationState.entityPersistenceBusy));
+
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, SERVICE_BUSY);
+
+//            var response = new ValidationResult();
+//            response.setMessage("Service Busy");
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
 
         ApplicationState.validationBusy = true;
@@ -66,9 +82,12 @@ public class ValidationController
             offerPlan = mongoService.getPlan(offerPlanId);
             if (offerPlanId == null)
             {
-                var response = new ValidationResult();
-                response.setMessage("given feed id is null");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, GIVEN_FEED_ID_IS_NULL);
+
+//                var response = new ValidationResult();
+//                response.setMessage("given feed id is null");
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
             // check file content present
             if (offerPlan.getFile() == null)
@@ -76,9 +95,13 @@ public class ValidationController
                 String errorString = String.format("feed with id : %s not found", offerPlanId);
                 log.atWarning().log(errorString);
                 ApplicationState.validationBusy = false;
-                var response = new ValidationResult();
-                response.setMessage(errorString);
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+
+                throw new ResponseStatusException(
+                        HttpStatus.NO_CONTENT, errorString);
+//
+//                var response = new ValidationResult();
+//                response.setMessage(errorString);
+//                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
             }
         }
         catch (Exception e)
@@ -86,9 +109,13 @@ public class ValidationController
             String errorString = String.format("error obtaining feed with id : %s", offerPlanId);
             log.atSevere().log(errorString);
             ApplicationState.validationBusy = false;
-            var response = new ValidationResult();
-            response.setMessage(errorString);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, errorString, e);
+
+//            var response = new ValidationResult();
+//            response.setMessage(errorString);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
 
         //
@@ -102,11 +129,15 @@ public class ValidationController
         catch (Exception e)
         {
             ApplicationState.validationBusy = false;
-            String errorString = String.format("error validating feed id : %s", offerPlanId);
+            String errorString = String.format(ERROR_VALIDATING_FEED + " id : %s", offerPlanId);
             log.atSevere().log(errorString);
-            var response = new ValidationResult();
-            response.setMessage(errorString);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, errorString, e);
+
+
+//            var response = new ValidationResult();
+//            response.setMessage(errorString);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
 
 
@@ -121,9 +152,9 @@ public class ValidationController
 
         // Gather validation results
         var notices = offerPlan.getValidationReport().getNotices();
-        var errorNotices = notices.stream().filter(n -> Objects.equals(n.getSeverity(), "ERROR")).findFirst().orElse(new Notice());
-        var warningNotices = notices.stream().filter(n -> Objects.equals(n.getSeverity(), "WARNING")).findFirst().orElse(new Notice());
-        var infoNotices = notices.stream().filter(n -> Objects.equals(n.getSeverity(), "INFO")).findFirst().orElse(new Notice());
+        var errorNotices = notices.stream().filter(n -> Objects.equals(n.getSeverity(), ERROR)).findFirst().orElse(new Notice());
+        var warningNotices = notices.stream().filter(n -> Objects.equals(n.getSeverity(), WARNING)).findFirst().orElse(new Notice());
+        var infoNotices = notices.stream().filter(n -> Objects.equals(n.getSeverity(), INFO)).findFirst().orElse(new Notice());
         GtfsFeedContainer gtfsFeedContainer = validatorService.getFeedContainer();
 
         // log
@@ -156,7 +187,7 @@ public class ValidationController
                     errorNotices.getTotalNotices(),
                     warningNotices.getTotalNotices(),
                     infoNotices.getTotalNotices(),
-                    "Validation Completed");
+                    VALIDATION_COMPLETED);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
         else
@@ -165,7 +196,7 @@ public class ValidationController
                     errorNotices.getTotalNotices(),
                     warningNotices.getTotalNotices(),
                     infoNotices.getTotalNotices(),
-                    "Validation Failed");
+                    VALIDATION_FAILED);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
@@ -189,7 +220,7 @@ public class ValidationController
         catch (Exception e)
         {
             ApplicationState.entityPersistenceBusy = false;
-            log.atSevere().withCause(e).log("Failed persisting some or all entities to database");
+            log.atSevere().withCause(e).log(FAILED_ENTITY_PERSISTENCE);
         }
     }
 }
