@@ -40,7 +40,7 @@ public class ValidationController
     @PostMapping("validate")
     public ResponseEntity<ValidationResult> uploadFile(
             @RequestParam("feedId") String offerPlanId,
-            @RequestParam("user") String user, HttpServletRequest request) throws Exception
+            @RequestParam("user") String user, HttpServletRequest request)
     {
 
 //      var remoteIpAddress= request.getHeader("X-FORWARDED-FOR");
