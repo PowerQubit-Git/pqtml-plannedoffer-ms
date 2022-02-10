@@ -10,7 +10,5 @@ import java.util.List;
 
 public interface FareRuleRepository extends JpaRepository<FareRule, CsvRowFeedIdCompositeKey>
 {
-    List<FareRule> findByFeedIdOrderByCsvRowNumberAsc(String id);
 
-    FareRule findByFareRuleId(String id);
 }

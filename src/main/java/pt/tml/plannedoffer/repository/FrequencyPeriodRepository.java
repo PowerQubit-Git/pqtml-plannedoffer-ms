@@ -9,7 +9,5 @@ import java.util.List;
 
 public interface FrequencyPeriodRepository extends JpaRepository<FrequencyPeriod, CsvRowFeedIdCompositeKey>
 {
-    List<FrequencyPeriod> findByFeedIdOrderByCsvRowNumberAsc(String id);
 
-    FrequencyPeriod findFrequencyPeriodId(String id);
 }

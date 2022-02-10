@@ -27,14 +27,27 @@ public class PostgresServiceProxy
         ApplicationState.entityPersistenceBusy = true;
         postgresService.addFeedInfoToDatabase(feedContainer, feedId);
         postgresService.addAgencyToDatabase(feedContainer, feedId);
-//        postgresService.addStopsToDatabase(feedContainer, feedId);
-//        postgresService.addRoutesToDatabase(feedContainer, feedId);
-//        postgresService.addTripsToDatabase(feedContainer, feedId);
-    //    postgresService.addStopTimesToDatabase(feedContainer, feedId);
-//        postgresService.addShapesToDatabase(feedContainer, feedId);
-//        postgresService.addCalendarToDatabase(feedContainer, feedId);
-//        postgresService.addCalendarDatesToDatabase(feedContainer, feedId); // TODO: MUST SKIP OR EXPORT THIS ONE
-//        postgresService.generateFrequencies(feedId);
+        postgresService.addStopsToDatabase(feedContainer, feedId);
+        postgresService.addRoutesToDatabase(feedContainer, feedId);
+        postgresService.addTripsToDatabase(feedContainer, feedId);
+        postgresService.addStopTimesToDatabase(feedContainer, feedId);
+        postgresService.addShapesToDatabase(feedContainer, feedId);
+        postgresService.addCalendarToDatabase(feedContainer, feedId);
+        postgresService.addCalendarDatesToDatabase(feedContainer, feedId); // TODO: MUST SKIP OR EXPORT THIS ONE
+
+
+        postgresService.addAttributionsToDatabase(feedContainer, feedId);
+        postgresService.addFareAttributesToDatabase(feedContainer, feedId);
+        postgresService.addFareRuleToDatabase(feedContainer,feedId);
+        postgresService.addFrequencyToDatabase(feedContainer,feedId);
+        postgresService.addLevelToDatabase(feedContainer,feedId);
+        postgresService.addPathwayToDatabase(feedContainer,feedId);
+        postgresService.addTransferToDatabase(feedContainer,feedId);
+
+
+//        postgresService.generateFrequencies(feedId); //JustFor IntendedOffer
+
+
         ApplicationState.entityPersistenceBusy = false;
     }
 }

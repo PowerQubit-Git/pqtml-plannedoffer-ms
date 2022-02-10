@@ -25,14 +25,13 @@ public class AgencyMapper
         gtfsEntities.forEach(gtfsEntity -> {
             var out = new Agency();
 
-
             out.setFeedId(feedId);
 
             out.setAgencyId(gtfsEntity.agencyId());
             out.setAgencyName(gtfsEntity.agencyName());
             out.setAgencyUrl(gtfsEntity.agencyUrl());
-//          out.setAgencyTimezone(gtfsEntity.agencyTimezone());
-            out.setAgencyLang(gtfsEntity.agencyLang());
+            //out.setAgencyTimezone(gtfsEntity.agencyTimezone()); //We don't use Timezone
+            //out.setAgencyLang(gtfsEntity.agencyLang()); //We don't use Language
             out.setCsvRowNumber(gtfsEntity.csvRowNumber());
 
             entities.add(out);

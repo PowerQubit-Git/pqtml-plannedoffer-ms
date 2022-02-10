@@ -25,7 +25,6 @@ public class TransfersMapper
         gtfsEntities.forEach(gtfsEntity -> {
             var out = new Transfers();
 
-
             out.setFeedId(feedId);
 
             out.setCsvRowNumber(gtfsEntity.csvRowNumber());

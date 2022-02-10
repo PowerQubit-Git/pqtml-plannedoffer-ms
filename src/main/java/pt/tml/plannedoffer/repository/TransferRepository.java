@@ -9,7 +9,5 @@ import java.util.List;
 
 public interface TransferRepository extends JpaRepository<Transfers, CsvRowFeedIdCompositeKey>
 {
-    List<Transfers> findByFeedIdOrderByCsvRowNumberAsc(String id);
 
-    Transfers findByTransferId(String id);
 }

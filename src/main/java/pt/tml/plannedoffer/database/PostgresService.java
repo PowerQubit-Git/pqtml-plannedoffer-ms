@@ -248,11 +248,11 @@ public class PostgresService
         var tableName = "shapes.txt";
         GtfsTableContainer container = feedContainer.getTableForFilename(tableName)
                 .orElseThrow(() -> new Exception(String.format("%s not found", tableName)));
-        var out = CalendarMapper.map(tableName, container, feedId);
+        var out = ShapesMapper.map(tableName, container, feedId);
 
         try
         {
-            calendarRepository.saveAllAndFlush(out);
+            shapeRepository.saveAllAndFlush(out);
         }
         catch (Exception e)
         {
@@ -353,24 +353,6 @@ public class PostgresService
         {
             log.atSevere().withCause(e).log();
         }
-    }
-
-    @LogExecutionTime
-    public void addFrequencyPeriodToDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
-    {
-//        var tableName = "frequency_period.txt";
-//        GtfsTableContainer container = feedContainer.getTableForFilename(tableName)
-//                .orElseThrow(() -> new Exception(String.format("%s not found", tableName)));
-//        var out = FrequencyPeriod.map(tableName, container, feedId);
-//
-//        try
-//        {
-//            frequencyPeriodRepository.saveAllAndFlush(out);
-//        }
-//        catch (Exception e)
-//        {
-//            log.atSevere().withCause(e).log();
-//        }
     }
 
     @LogExecutionTime

@@ -9,7 +9,5 @@ import java.util.List;
 
 public interface FareAttributesRepository extends JpaRepository<FareAttributes, CsvRowFeedIdCompositeKey>
 {
-    List<FareAttributes> findByFeedIdOrderByCsvRowNumberAsc(String id);
 
-    FareAttributes findByFareAttributesId(String id);
 }

@@ -14,7 +14,7 @@ import java.util.Locale;
 @Data
 @Table(name = "agency")
 @CsvFileName("agency.txt")
-@CsvBindByNameOrder({"AgencyId", "AgencyName", "AgencyUrl", "AgencyTimezone", "AgencyLang",})
+@CsvBindByNameOrder({"AgencyId", "AgencyName", "AgencyUrl", "AgencyLang",})
 @IdClass(CsvRowFeedIdCompositeKey.class)
 public class Agency implements FeedIdEntity
 {
