@@ -35,15 +35,15 @@ public interface GtfsSchedulesSchema extends GtfsEntity
 
     @FieldType(FieldTypeEnum.ID)
     @ConditionallyRequired
-    String shift_id();
+    String shiftId();
 
     @FieldType(FieldTypeEnum.ID)
     @ForeignKey(table = "vehicles.txt", field = "vehicle_id")
     @ConditionallyRequired
-    String vehicle_id();
+    String vehicleId();
 
     @FieldType(FieldTypeEnum.ID)
     @ConditionallyRequired
-    String driver_id();
+    String driverId();
 
 }

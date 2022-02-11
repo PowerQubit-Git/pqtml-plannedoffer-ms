@@ -28,10 +28,10 @@ public class ScheduleMapper
 
             out.setCsvRowNumber(gtfsEntity.csvRowNumber());
             out.setBlockId(gtfsEntity.blockId());
-            out.setDriver_id(gtfsEntity.driver_id());
+            out.setDriver_id(gtfsEntity.driverId());
             out.setServiceId(gtfsEntity.serviceId());
-            out.setShift_id(gtfsEntity.shift_id());
-            out.setVehicle_id(gtfsEntity.vehicle_id());
+            out.setShift_id(gtfsEntity.shiftId());
+            out.setVehicle_id(gtfsEntity.vehicleId());
 
             entities.add(out);
         });
