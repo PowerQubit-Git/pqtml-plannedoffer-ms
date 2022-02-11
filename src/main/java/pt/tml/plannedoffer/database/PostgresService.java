@@ -60,6 +60,18 @@ public class PostgresService
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    DeadRunRepository deadRunRepository;
+    @Autowired
+    SchedulesRepository schedulesRepository;
+    @Autowired
+    BlocksRepository blocksRepository;
+    @Autowired
+    VehiclesRepository vehiclesRepository;
+    @Autowired
+    LayoverRepository layoverRepository;
+
+
 
     /**
      * Generate frequencies for a plan
@@ -402,6 +414,101 @@ public class PostgresService
         try
         {
             transferRepository.saveAllAndFlush(out);
+        }
+        catch (Exception e)
+        {
+            log.atSevere().withCause(e).log();
+        }
+    }
+
+
+    /////////////////////////////////////////////////// UP TESTED AND WORKING
+    // NEW STUFF
+    ////////////////////////////////////////////////// DOWN NOT TESTED
+
+    @LogExecutionTime
+    public void addDeadRunsDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
+    {
+        var tableName = "dead_runs.txt";
+        GtfsTableContainer container = feedContainer.getTableForFilename(tableName)
+                .orElseThrow(() -> new Exception(String.format("%s not found", tableName)));
+        var out = DeadRunsMapper.map(tableName, container, feedId);
+
+        try
+        {
+            deadRunRepository.saveAllAndFlush(out);
+        }
+        catch (Exception e)
+        {
+            log.atSevere().withCause(e).log();
+        }
+    }
+
+    @LogExecutionTime
+    public void addSchedulesDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
+    {
+        var tableName = "schedules.txt";
+        GtfsTableContainer container = feedContainer.getTableForFilename(tableName)
+                .orElseThrow(() -> new Exception(String.format("%s not found", tableName)));
+        var out = ScheduleMapper.map(tableName, container, feedId);
+
+        try
+        {
+            schedulesRepository.saveAllAndFlush(out);
+        }
+        catch (Exception e)
+        {
+            log.atSevere().withCause(e).log();
+        }
+    }
+
+    @LogExecutionTime
+    public void addBlocksDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
+    {
+        var tableName = "blocks.txt";
+        GtfsTableContainer container = feedContainer.getTableForFilename(tableName)
+                .orElseThrow(() -> new Exception(String.format("%s not found", tableName)));
+        var out = BlocksMapper.map(tableName, container, feedId);
+
+        try
+        {
+            blocksRepository.saveAllAndFlush(out);
+        }
+        catch (Exception e)
+        {
+            log.atSevere().withCause(e).log();
+        }
+    }
+
+    @LogExecutionTime
+    public void addVehiclesDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
+    {
+        var tableName = "vehicles.txt";
+        GtfsTableContainer container = feedContainer.getTableForFilename(tableName)
+                .orElseThrow(() -> new Exception(String.format("%s not found", tableName)));
+        var out = VehiclesMapper.map(tableName, container, feedId);
+
+        try
+        {
+            vehiclesRepository.saveAllAndFlush(out);
+        }
+        catch (Exception e)
+        {
+            log.atSevere().withCause(e).log();
+        }
+    }
+
+    @LogExecutionTime
+    public void addLayoverDatabase(GtfsFeedContainer feedContainer, String feedId) throws Exception
+    {
+        var tableName = "vehicles.txt";
+        GtfsTableContainer container = feedContainer.getTableForFilename(tableName)
+                .orElseThrow(() -> new Exception(String.format("%s not found", tableName)));
+        var out = LayoversMapper.map(tableName, container, feedId);
+
+        try
+        {
+            layoverRepository.saveAllAndFlush(out);
         }
         catch (Exception e)
         {

@@ -44,6 +44,13 @@ public class PostgresServiceProxy
         postgresService.addPathwayToDatabase(feedContainer,feedId);
         postgresService.addTransferToDatabase(feedContainer,feedId);
 
+        // NEW STUFF DOWN
+        postgresService.addDeadRunsDatabase(feedContainer,feedId);
+        postgresService.addBlocksDatabase(feedContainer, feedId);
+        postgresService.addSchedulesDatabase(feedContainer,feedId);
+        postgresService.addVehiclesDatabase(feedContainer,feedId);
+        postgresService.addLayoverDatabase(feedContainer , feedId);
+
 
 //        postgresService.generateFrequencies(feedId); //JustFor IntendedOffer
 
