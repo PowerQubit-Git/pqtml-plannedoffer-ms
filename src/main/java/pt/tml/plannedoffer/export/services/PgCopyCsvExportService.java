@@ -5,11 +5,11 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.tml.plannedoffer.models.CsvExportResult;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
 import pt.tml.plannedoffer.export.writer.CsvPgCopyWriter;
 import pt.tml.plannedoffer.global.ApplicationState;
+import pt.tml.plannedoffer.models.CsvExportResult;
 
 import javax.persistence.Table;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class PgCopyCsvExportService
      * @throws IOException
      * @throws InterruptedException
      */
-    public CsvExportResult export(String feedId, Path csvFilesFolder, Path zipFilePath) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException, InterruptedException, URISyntaxException
+    public CsvExportResult export(String feedId, String agencyId, Path csvFilesFolder, Path zipFilePath) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException, InterruptedException, URISyntaxException
     {
 
         int exportedFIles = 0;
@@ -73,8 +73,12 @@ public class PgCopyCsvExportService
             var fieldList = entityType.getAnnotation(CsvBindByNameOrder.class).value();
             var csvFilePath = csvFilesFolder.resolve(csvFileName);
 
+            // translate tableName to views in order to convert table to view queries
+            tableName = "vw_agencyfeed_" + tableName;
+
+
             // Export the csv file using postgres \copy command
-            var tableExportedRows = csvPgCopyWriter.Write(tableName, List.of(fieldList), feedId, csvFilePath);
+            var tableExportedRows = csvPgCopyWriter.Write(tableName, List.of(fieldList), feedId, agencyId, csvFilePath);
             if (tableExportedRows > 0)
             {
                 exportedFIles++;
@@ -86,7 +90,7 @@ public class PgCopyCsvExportService
         }
 
         fileService.ensureDirectoryCreation(zipFilePath, false);
-        var zipFileName = String.format("offer-plan-%s.zip", feedId);
+        var zipFileName = String.format("offer-plan-%s-%s.zip", feedId, agencyId);
         zipService.ZipTxtFilesInDirectory(csvFilesFolder, zipFilePath.resolve(zipFileName));
         ApplicationState.exportBusy = false;
 

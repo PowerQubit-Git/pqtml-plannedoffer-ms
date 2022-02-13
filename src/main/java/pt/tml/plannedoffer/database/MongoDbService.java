@@ -49,6 +49,16 @@ public class MongoDbService
 
 
     /**
+     * delete Planned Offer blob from Mongo DB
+     */
+    @LogExecutionTime(started = "Deleting Planned Offer from MongoDb")
+    public void deletePlan(String feedId)
+    {
+        mongoRepository.deleteById(feedId);
+    }
+
+
+    /**
      * Read Offer from Mongo
      */
     public PlannedOfferUpload savePlan(String offerId) throws Exception

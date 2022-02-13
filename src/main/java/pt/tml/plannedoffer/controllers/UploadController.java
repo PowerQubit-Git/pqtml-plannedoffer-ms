@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import pt.tml.plannedoffer.database.MongoDbService;
+import pt.tml.plannedoffer.database.PostgresService;
 import pt.tml.plannedoffer.global.ApplicationState;
 import pt.tml.plannedoffer.gtfs.GtfsValidationService;
-import pt.tml.plannedoffer.models.Notices;
-import pt.tml.plannedoffer.models.PlannedOfferInfo;
-import pt.tml.plannedoffer.models.PlannedOfferUpload;
-import pt.tml.plannedoffer.models.ReportSummary;
+import pt.tml.plannedoffer.models.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -22,24 +21,24 @@ import java.util.List;
 @Flogger
 @RestController
 @CrossOrigin("*")
+@RequestMapping("plans")
 public class UploadController
 {
 
     @Autowired
     MongoDbService mongoService;
-
+    @Autowired
+    PostgresService postgresService;
     @Autowired
     GtfsValidationService service;
+
 
     @SuppressWarnings("unchecked")
     @PostMapping("upload")
     public ResponseEntity<PlannedOfferInfo> uploadFile(@RequestParam("file") MultipartFile file,
-                                                       @RequestParam("user") String publisher,
-                                                       HttpServletRequest request)
+                                                        @RequestParam("user") String publisher,
+                                                        HttpServletRequest request)
     {
-//        var remoteIpAddress= request.getHeader("X-FORWARDED-FOR").or;
-//        var remoteIpAddress= request.getRemoteAddress());
-
         if (ApplicationState.uploadBusy || ApplicationState.validationBusy || ApplicationState.entityPersistenceBusy)
         {
             log.atWarning().log(String.format("Upload request refused in busy state u:%s v:%s p:%s",
@@ -69,7 +68,7 @@ public class UploadController
             long endTime = System.currentTimeMillis();
             upload.setLoadTime(endTime - startTime);
 
-            // Always save new feed to mongo
+            // Save new feed to mongo
             var savedUpload = mongoService.savePlan(upload);
 
             ApplicationState.uploadBusy = false;
@@ -86,15 +85,15 @@ public class UploadController
     }
 
 
-    @GetMapping("uploads")
-    List<PlannedOfferUpload> getUploads()
+    @GetMapping
+    HttpEntity<List<PlannedOfferUpload>> getUploads()
     {
-        return mongoService.getMetaPlan();
+        return new HttpEntity<>(mongoService.getMetaPlan());
     }
 
 
     @GetMapping("download/{feedId}")
-    HttpEntity<byte[]> getOfferBlob(@PathVariable String feedId) throws Exception
+    HttpEntity<byte[]> getOfferBlob(@PathVariable(value = "feedId") String feedId) throws Exception
     {
         PlannedOfferUpload m = mongoService.getPlan(feedId);
         Binary file = m.getFile();
@@ -107,28 +106,43 @@ public class UploadController
     }
 
 
+    @DeleteMapping("{feedId}")
+    ResponseMessage deleteOffer(@PathVariable(value = "feedId") String feedId) throws Exception
+    {
+        try
+        {
+            mongoService.deletePlan(feedId);
+            postgresService.deletePlan(feedId);
+        }
+        catch (Exception e)
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseMessage("deleted");
+    }
+
+
     @GetMapping("validation-report/{feedId}")
-    Notices getValidationsReport(@PathVariable String feedId) throws Exception
+    HttpEntity<Notices> getValidationsReport(@PathVariable(value = "feedId") String feedId) throws Exception
     {
         PlannedOfferUpload m = mongoService.getPlan(feedId);
-        return m.getValidationReport();
+        return new HttpEntity<>(m.getValidationReport());
     }
 
 
     @GetMapping("validation-errors/{feedId}")
-    Notices getErrorsReport(@PathVariable String feedId) throws Exception
+    HttpEntity<Notices> getErrorsReport(@PathVariable(value = "feedId") String feedId) throws Exception
     {
         PlannedOfferUpload m = mongoService.getPlan(feedId);
-        return m.getErrorsReport();
+        return new HttpEntity<>(m.getErrorsReport());
     }
 
 
     @GetMapping("explorer/{feedId}")
-    List<ReportSummary> getFilesResume(@PathVariable String feedId) throws Exception
+    HttpEntity<List<ReportSummary>> getFilesResume(@PathVariable(value = "feedId") String feedId) throws Exception
     {
         PlannedOfferUpload m = mongoService.getPlan(feedId);
-        return m.getTableResumeList();
+        return new HttpEntity<>(m.getTableResumeList());
     }
-
 
 }

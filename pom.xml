@@ -132,27 +132,21 @@
                 </configuration>
             </plugin>
 
+
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>8.4.2</version>
 
                 <configuration>
-                    <url>jdbc:postgresql://localhost:5432/sae</url>
+                    <url>jdbc:postgresql://localhost:5433/sae</url>
                     <user>postgres</user>
                     <password>Pocosi12</password>
                     <schemas>ms_planned_offer</schemas>
                 </configuration>
 
-
-                <!--                <configuration>-->
-                <!--                    <url>jdbc:postgresql://localhost:5432/sae</url>-->
-                <!--                    <user>postgres</user>-->
-                <!--                    <password>Pocosi12</password>-->
-                <!--                    <schemas>ms_planned_offer</schemas>-->
-                <!--                </configuration>-->
-
             </plugin>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

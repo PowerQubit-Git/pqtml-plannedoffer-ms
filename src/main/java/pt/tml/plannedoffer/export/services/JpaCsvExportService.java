@@ -5,10 +5,10 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.tml.plannedoffer.models.CsvExportResult;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.writer.CsvJpaWriter;
 import pt.tml.plannedoffer.global.ApplicationState;
+import pt.tml.plannedoffer.models.CsvExportResult;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

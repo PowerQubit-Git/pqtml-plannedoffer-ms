@@ -1,10 +1,8 @@
 package pt.tml.plannedoffer.database.mappers;
 
 import lombok.extern.flogger.Flogger;
-import pt.powerqubit.validator.core.table.GtfsAgency;
 import pt.powerqubit.validator.core.table.GtfsRoute;
 import pt.powerqubit.validator.core.table.GtfsTableContainer;
-import pt.tml.plannedoffer.entities.Agency;
 import pt.tml.plannedoffer.entities.Route;
 
 import java.util.ArrayList;

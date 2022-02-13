@@ -1,13 +1,10 @@
 package pt.tml.plannedoffer.database.mappers;
 
 import lombok.extern.flogger.Flogger;
-import pt.powerqubit.validator.core.table.GtfsAgency;
 import pt.powerqubit.validator.core.table.GtfsTableContainer;
 import pt.powerqubit.validator.core.table.GtfsTrip;
-import pt.tml.plannedoffer.entities.Agency;
 import pt.tml.plannedoffer.entities.Trip;
 
-import javax.swing.table.TableRowSorter;
 import java.util.ArrayList;
 import java.util.List;
 

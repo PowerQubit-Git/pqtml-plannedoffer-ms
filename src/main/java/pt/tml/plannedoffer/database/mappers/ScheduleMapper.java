@@ -1,7 +1,6 @@
 package pt.tml.plannedoffer.database.mappers;
 
 import lombok.extern.flogger.Flogger;
-import pt.powerqubit.validator.core.table.GtfsSchedule;
 import pt.powerqubit.validator.core.table.GtfsSchedules;
 import pt.powerqubit.validator.core.table.GtfsTableContainer;
 import pt.tml.plannedoffer.entities.Schedules;

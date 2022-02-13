@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pt.tml.plannedoffer.aspects.LogExecutionTime;
 import pt.tml.plannedoffer.export.services.JpaCsvExportService;
 import pt.tml.plannedoffer.export.services.PgCopyCsvExportService;
@@ -24,6 +21,7 @@ import java.nio.file.Path;
 @RestController
 @CrossOrigin("*")
 @Flogger
+@RequestMapping("export")
 public class ExportCsvController
 {
     @Autowired
@@ -42,10 +40,11 @@ public class ExportCsvController
 
     /**
      * Export all Entities with @CsvFileName and @CsvBindByNameOrder annotations
+     *
      */
-    @GetMapping("csv-generate/{feedId}")
+    @GetMapping("generate/{feedId}/{agencyId}")
     @LogExecutionTime
-    public HttpEntity ExportCsv(@PathVariable String feedId) throws Exception
+    public HttpEntity ExportCsv(@PathVariable(value = "feedId") String feedId, @PathVariable(value = "agencyId") String agencyId) throws Exception
     {
         CsvExportResult exportResult = new CsvExportResult();
 
@@ -59,7 +58,7 @@ public class ExportCsvController
         {
             if (usePostgresCopy)
             {
-                exportResult = pgCopyCsvExportService.export(feedId, Path.of(csvFilesFolder), Path.of(zipFileFolder));
+                exportResult = pgCopyCsvExportService.export(feedId, agencyId, Path.of(csvFilesFolder), Path.of(zipFileFolder));
             }
             else
             {
@@ -86,14 +85,14 @@ public class ExportCsvController
     }
 
 
-    @GetMapping("zip-download/{feedId}")
-    ResponseEntity<Resource> DownloadZip(@PathVariable String feedId, HttpServletRequest request) throws Exception
+    @GetMapping("download/{feedId}/{agencyId}")
+    ResponseEntity<Resource> DownloadZip(@PathVariable(value = "feedId") String feedId, @PathVariable(value = "agencyId") String agencyId, HttpServletRequest request) throws Exception
     {
-        Path filePath = Path.of(zipFileFolder, String.format("offer-plan-%s.zip", feedId));
+        Path filePath = Path.of(zipFileFolder, String.format("offer-plan-%s-%s.zip", feedId, agencyId));
         var resource = new UrlResource(filePath.toUri());
         if (!resource.exists())
         {
-            String errorString = String.format("No zip available for id : %s", feedId);
+            String errorString = String.format("No zip available for id : %s agency : %s", feedId, agencyId);
             log.atSevere().log(errorString);
             return ResponseEntity.notFound().build();
         }

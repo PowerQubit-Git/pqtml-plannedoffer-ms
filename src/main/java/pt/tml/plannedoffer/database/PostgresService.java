@@ -5,15 +5,13 @@ import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import pt.powerqubit.validator.core.table.*;
+import pt.powerqubit.validator.core.table.GtfsFeedContainer;
+import pt.powerqubit.validator.core.table.GtfsTableContainer;
 import pt.tml.plannedoffer.aspects.LogExecutionTime;
 import pt.tml.plannedoffer.database.mappers.*;
-import pt.tml.plannedoffer.entities.*;
 import pt.tml.plannedoffer.repository.*;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
 
 @Flogger
 @Component
@@ -92,6 +90,21 @@ public class PostgresService
         }
     }
 
+
+    @LogExecutionTime(started = "Deleting plan from Postgres")
+    public void deletePlan(String feedId)
+    {
+        try
+        {
+            String sql = String.format("call sp_erase_plan('%s');", feedId);
+            jdbcTemplate.execute(sql);
+        }
+        catch (Exception e)
+        {
+            log.atSevere().withCause(e).log(String.format("Unable to delete plan %s", feedId));
+            throw (e);
+        }
+    }
 
     /**
      * Add Agency fields to database

@@ -16,12 +16,14 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping("trips")
 public class TripController
 {
     @Autowired
     TripRepository tripRepository;
 
-    @GetMapping("trips/{id}")
+
+    @GetMapping("{id}")
     HttpEntity<List<Trip>> get(@PathVariable String id) throws Exception
     {
         try
@@ -35,7 +37,8 @@ public class TripController
         }
     }
 
-    @GetMapping("trips/{feedId}/{csvRowNumber}")
+
+    @GetMapping("{feedId}/{csvRowNumber}")
     HttpEntity<Trip> getOne(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         try
@@ -50,7 +53,8 @@ public class TripController
         }
     }
 
-    @GetMapping("trips-by-route/{feedId}/{routeId}")
+
+    @GetMapping("by-route/{feedId}/{routeId}")
     HttpEntity<List<Trip>> getByRoute(@PathVariable(value = "feedId") String feedId, @PathVariable(value = "routeId") String routeId) throws Exception
     {
         try
@@ -64,13 +68,15 @@ public class TripController
         }
     }
 
-    @PostMapping("trips")
+
+    @PostMapping
     public Trip create(@Valid @RequestBody Trip Trip)
     {
         return tripRepository.save(Trip);
     }
 
-    @PutMapping("trips/{id}")
+
+    @PutMapping("{id}")
     public ResponseEntity<Trip> update(@PathVariable(value = "id") String id, @Valid @RequestBody Trip details) throws Exception
     {
         try
@@ -84,7 +90,8 @@ public class TripController
         }
     }
 
-    @DeleteMapping("trips/{feedId}/{csvRowNumber}")
+
+    @DeleteMapping("{feedId}/{csvRowNumber}")
     public Map<String, Boolean> deleteTrip(@PathVariable(value = "feedId") long feedId, @PathVariable(value = "csvRowNumber") String csvRowNumber) throws Exception
     {
         Trip Trip = tripRepository.findById(new CsvRowFeedIdCompositeKey(csvRowNumber, feedId))
@@ -95,5 +102,4 @@ public class TripController
         response.put("deleted", Boolean.TRUE);
         return response;
     }
-
 }

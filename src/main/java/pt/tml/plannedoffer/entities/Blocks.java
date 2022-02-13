@@ -4,13 +4,11 @@ import com.opencsv.bean.CsvIgnore;
 import lombok.Data;
 import org.checkerframework.checker.index.qual.NonNegative;
 import pt.powerqubit.validator.core.table.*;
-import pt.powerqubit.validator.core.type.GtfsDate;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Data

@@ -1,6 +1,5 @@
 package pt.tml.plannedoffer.entities;
 
-import com.google.gson.annotations.JsonAdapter;
 import com.opencsv.bean.CsvIgnore;
 import lombok.Data;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;

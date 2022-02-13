@@ -5,14 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.checkerframework.checker.index.qual.NonNegative;
 import pt.powerqubit.validator.core.table.*;
-import pt.powerqubit.validator.core.type.GtfsDate;
 import pt.tml.plannedoffer.entities.key.CsvRowFeedIdCompositeKey;
 import pt.tml.plannedoffer.export.annotations.CsvFileName;
 import pt.tml.plannedoffer.export.strategies.CsvBindByNameOrder;
-import pt.tml.plannedoffer.gtfs.tables.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Getter
