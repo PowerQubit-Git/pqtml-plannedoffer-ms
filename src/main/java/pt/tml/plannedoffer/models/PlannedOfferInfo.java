@@ -11,7 +11,6 @@ import java.util.Date;
 @Document(collection = "PlannedOfferUploads")
 public class PlannedOfferInfo
 {
-
     @Transient
     public static final String SEQUENCE_NAME = "raw_input_sequence";
     public String originIp;
@@ -20,12 +19,9 @@ public class PlannedOfferInfo
     private String publisherName;
     private String validatorName;
     private String fileName;
-
     private Date uploadDate;
     private Date validationDate;
-
     private boolean validated;
-
     private long loadTime;
     private long fileSize;
 }

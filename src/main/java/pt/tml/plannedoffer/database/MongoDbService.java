@@ -13,10 +13,8 @@ import java.util.List;
 @Component
 public class MongoDbService
 {
-
     @Autowired
     PlannedOfferUploadRepository mongoRepository;
-
 
     /**
      * Read Planned offer from Mongo DB
@@ -24,7 +22,6 @@ public class MongoDbService
     @LogExecutionTime(started = "Reading Planned Offer from MongoDb")
     public PlannedOfferUpload getPlan(String offerId)
     {
-
         PlannedOfferUpload res = null;
         try
         {

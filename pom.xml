@@ -29,12 +29,6 @@
             <version>1.0.0</version>
         </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>pt.tml</groupId>-->
-        <!--            <artifactId>backend-common-lib</artifactId>-->
-        <!--            <version>0.0.1-SNAPSHOT</version>-->
-        <!--        </dependency>-->
-
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>

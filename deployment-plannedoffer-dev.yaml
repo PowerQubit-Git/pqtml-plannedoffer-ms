@@ -42,12 +42,50 @@ spec:
           env:
             - name: server.servlet.contextPath
               value: "/planned-offer"
+            - name: spring.data.mongodb.username
+              value: "plannedoffer"
+            - name: spring.data.mongodb.authentication-database
+              value: "admin"
+            - name: spring.data.mongodb.host
+              value: "10.3.4.3"
+            - name: spring.data.mongodb.port
+              value: "27017"
+            - name: spring.data.mongodb.password
+              value: "Pocosi12"
+            - name: spring.data.mongodb.database
+              value: "PlannedOfferManagement"
             - name: spring.datasource.url
               value: "jdbc:postgresql://10.3.4.2:5432/sae?currentSchema=ms_planned_offer&reWriteBatchedInserts=true"
             - name: spring.datasource.username
               value: "postgres"
             - name: spring.datasource.password
               value: "Pocosi12"
+            - name: postgres.port
+              value: "5432"
+            - name: postgres.host
+              value: "10.3.4.2"
+            - name: postgres.database
+              value: "sae"
+            - name: postgres.executable
+              value: "psql"
+            - name: generator.csv.encoding
+              value: "UTF_8"
+            - name: generator.usePostgresCopy
+              value: "true"
+            - name: generator.csv.directory
+              value: "/generated-files/csv"
+            - name: generator.csv.zip-file
+              value: "./generated-files/csv/compressed"
+            - name: spring.servlet.multipart.max-file-size
+              value: "20MB"
+            - name: spring.servlet.multipart.max-request-size
+              value: "20MB"
+            - name: server.error.include-message
+              value: "always"
+            - name: spring.jpa.properties.hibernate.jdbc.batch_size
+              value: "20"
+            - name: spring.jpa.properties.hibernate.order_inserts
+              value: "true"
             - name: spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation
               value: "true"
             - name: spring.jpa.properties.hibernate.dialect
@@ -61,13 +99,15 @@ spec:
             - name: spring.flyway.baseline-on-migrate
               value: "true"
             - name: spring.flyway.enabled
-              value: "true"
+              value: "false"
             - name: solace.jms.host
               value: "solace-pubsubplus-ha.solace.svc.cluster.local"
             - name: solace.jms.msgVpn
               value: "default"
-            - name: spring.data.mongodb.database
-              value: "ActionListManagement"
+            - name: solace.jms.clientUsername
+              value: "default"
+            - name: solace.jms.clientPassword
+              value: ""
           ports:
             - containerPort: 8080
               protocol: TCP

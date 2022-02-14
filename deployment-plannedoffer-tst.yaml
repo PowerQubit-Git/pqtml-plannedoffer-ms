@@ -99,7 +99,7 @@ spec:
             - name: spring.flyway.baseline-on-migrate
               value: "true"
             - name: spring.flyway.enabled
-              value: "true"
+              value: "false"
             - name: solace.jms.host
               value: "solace-pubsubplus-ha.solace.svc.cluster.local"
             - name: solace.jms.msgVpn
